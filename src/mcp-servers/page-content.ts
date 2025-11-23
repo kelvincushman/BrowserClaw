@@ -1237,7 +1237,7 @@ export async function highlightElement(selector: string, options?: {
 
         // Debug info for color selection
         const elementColors = getElementColors(element)
-        console.log('AIPex Color Detection:', {
+        console.log('AigentisBrowser Color Detection:', {
           element: element.tagName + (element.className ? '.' + element.className : ''),
           detectedBackground: elementColors.background,
           detectedText: elementColors.text,
@@ -1246,31 +1246,31 @@ export async function highlightElement(selector: string, options?: {
         })
 
         // Create unique highlight ID
-        const highlightId = `aipex-highlight-${Date.now()}`
+        const highlightId = `aigentis-highlight-${Date.now()}`
         element.setAttribute('data-highlight-id', highlightId)
 
         // Get element position for overlay calculations
         const elementRect = element.getBoundingClientRect()
 
         // Insert CSS styles if not already present
-        if (!document.getElementById('aipex-highlight-styles')) {
+        if (!document.getElementById('aigentis-highlight-styles')) {
           const styleSheet = document.createElement('style')
-          styleSheet.id = 'aipex-highlight-styles'
+          styleSheet.id = 'aigentis-highlight-styles'
           styleSheet.textContent = `
-            .aipex-highlight-shadow {
+            .aigentis-highlight-shadow {
               filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.8));
               transition: all 0.3s ease;
             }
             
-            .aipex-highlight-shadow.subtle {
+            .aigentis-highlight-shadow.subtle {
               filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));
             }
-            
-            .aipex-highlight-shadow.normal {
+
+            .aigentis-highlight-shadow.normal {
               filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.8));
             }
-            
-            .aipex-highlight-shadow.strong {
+
+            .aigentis-highlight-shadow.strong {
               filter: drop-shadow(0 0 25px rgba(0, 212, 255, 1));
             }
           `
@@ -1284,7 +1284,7 @@ export async function highlightElement(selector: string, options?: {
         })
 
         // Apply shadow highlight style
-        element.classList.add('aipex-highlighted', 'aipex-highlight-shadow', intensity)
+        element.classList.add('aigentis-highlighted', 'aigentis-highlight-shadow', intensity)
         
         if (highlightColor !== '#00d4ff') {
           const rgb = hexToRgb(highlightColor) || {r: 0, g: 212, b: 255}
@@ -1307,7 +1307,7 @@ export async function highlightElement(selector: string, options?: {
             })
             
             // Remove highlight classes
-            element.classList.remove('aipex-highlighted', 'aipex-highlight-shadow', 'subtle', 'normal', 'strong')
+            element.classList.remove('aigentis-highlighted', 'aigentis-highlight-shadow', 'subtle', 'normal', 'strong')
             
             element.removeAttribute('data-highlight-id')
           }, highlightDuration)
@@ -1405,11 +1405,11 @@ export async function highlightTextInline(selector: string, searchText: string, 
         let totalMatches = 0
 
         // Create highlight styles if not already present
-        if (!document.getElementById('aipex-text-highlight-styles')) {
+        if (!document.getElementById('aigentis-text-highlight-styles')) {
           const styleSheet = document.createElement('style')
-          styleSheet.id = 'aipex-text-highlight-styles'
+          styleSheet.id = 'aigentis-text-highlight-styles'
           styleSheet.textContent = `
-            .aipex-text-highlight {
+            .aigentis-text-highlight {
               color: ${highlightColor} !important;
               background-color: ${backgroundColor} !important;
               font-weight: ${fontWeight} !important;
@@ -1418,7 +1418,7 @@ export async function highlightTextInline(selector: string, searchText: string, 
               transition: all 0.2s ease;
             }
             
-            .aipex-text-highlight:hover {
+            .aigentis-text-highlight:hover {
               background-color: rgba(220, 20, 60, 0.1) !important;
             }
           `
@@ -1445,7 +1445,7 @@ export async function highlightTextInline(selector: string, searchText: string, 
 
           // Create replacement HTML
           const highlightedText = text.replace(pattern, (match) => {
-            return `<span class="aipex-text-highlight" data-highlight-text="${searchText}">${match}</span>`
+            return `<span class="aigentis-text-highlight" data-highlight-text="${searchText}">${match}</span>`
           })
 
           // Replace the text node with highlighted HTML
@@ -1477,7 +1477,7 @@ export async function highlightTextInline(selector: string, searchText: string, 
                   return NodeFilter.FILTER_REJECT
                 }
                 
-                if (parent.classList.contains('aipex-text-highlight')) {
+                if (parent.classList.contains('aigentis-text-highlight')) {
                   return NodeFilter.FILTER_REJECT
                 }
                 
@@ -1508,7 +1508,7 @@ export async function highlightTextInline(selector: string, searchText: string, 
         // Clean up function if not persistent
         if (!persist) {
           setTimeout(() => {
-            const highlights = document.querySelectorAll('.aipex-text-highlight')
+            const highlights = document.querySelectorAll('.aigentis-text-highlight')
             highlights.forEach(highlight => {
               const parent = highlight.parentNode
               if (parent) {

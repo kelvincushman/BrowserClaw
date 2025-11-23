@@ -377,7 +377,7 @@ const Omni = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => 
     }
   }, [input, actions])
 
-  // Close-omni message listener (open-aipex is handled by ContentApp parent)
+  // Close-omni message listener (open-aigentis-browser is handled by ContentApp parent)
   React.useEffect(() => {
     const handleMessage = (message: any) => {
       if (message.request === "close-omni") {
@@ -772,7 +772,7 @@ const ContentApp = () => {
   React.useEffect(() => {
     const handleMessage = (message: any, _sender: any, sendResponse: any) => {
       
-      if (message.request === "open-aipex") {
+      if (message.request === "open-aigentis-browser") {
         setIsOmniOpen(true)
         sendResponse({ success: true })
         return true // Keep message channel open

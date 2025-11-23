@@ -199,7 +199,7 @@ const clearActions = async () => {
     { title: "Fullscreen", desc: "Make the page fullscreen", type: "action", action: "fullscreen", emoji: true, emojiChar: "🖥", keycheck: true, keys: ['⌘', 'Ctrl', 'F'] },
     muteaction,
     { title: "Reload", desc: "Reload the page", type: "action", action: "reload", emoji: true, emojiChar: "♻️", keycheck: true, keys: ['⌘', '⇧', 'R'] },
-    { title: "Help", desc: "Get help with AIPex on GitHub", type: "action", action: "url", url: "https://github.com/buttercannfly/AIpex", emoji: true, emojiChar: "🤔", keycheck: false },
+    { title: "Help", desc: "Get help with AigentisBrowser on GitHub", type: "action", action: "url", url: "https://github.com/kelvincushman/AIPex", emoji: true, emojiChar: "🤔", keycheck: false },
     { title: "Compose email", desc: "Compose a new email", type: "action", action: "email", emoji: true, emojiChar: "✉️", keycheck: true, keys: ['⌥', '⇧', 'C'] },
     { title: "Print page", desc: "Print the current page", type: "action", action: "print", emoji: true, emojiChar: "🖨️", keycheck: true, keys: ['⌘', 'P'] },
     { title: "New Notion page", desc: "Create a new Notion page", type: "action", action: "url", url: "https://notion.new", emoji: false, favIconUrl: logoNotion, keycheck: false },
@@ -308,7 +308,7 @@ const clearActions = async () => {
 chrome.runtime.onInstalled.addListener((object) => {
   // Plasmo/Manifest V3: Cannot directly inject scripts using content_scripts field, need scripting API
   if (object.reason === "install") {
-    chrome.tabs.create({ url: "https://aipex.quest" })
+    chrome.tabs.create({ url: "https://github.com/kelvincushman/AIPex" })
   }
 })
 
@@ -322,15 +322,15 @@ chrome.action.onClicked.addListener((tab) => {
 
 // Shortcut listener
 chrome.commands.onCommand.addListener((command) => {
-  if (command === "open-aipex") {
+  if (command === "open-aigentis-browser") {
     getCurrentTab().then((response) => {
       if (!response?.url?.includes("chrome://") && !response?.url?.includes("chrome.google.com")) {
-        console.log("open-aipex")
-        chrome.tabs.sendMessage(response.id!, { request: "open-aipex" })
+        console.log("open-aigentis-browser")
+        chrome.tabs.sendMessage(response.id!, { request: "open-aigentis-browser" })
       } else {
         // Open a new tab with our custom new tab page
         chrome.tabs.create({ url: "chrome://newtab" }).then((tab) => {
-          console.log("open-aipex-new-tab")
+          console.log("open-aigentis-browser-new-tab")
           newtaburl = response?.url || ""
           chrome.tabs.remove(response.id!)
         })

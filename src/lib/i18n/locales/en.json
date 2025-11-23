@@ -45,8 +45,7 @@
     "enhancedPlanning": "Enhanced AI Planning with ReAct Framework"
   },
   "language": {
-    "en": "English",
-    "zh": "中文"
+    "en": "English"
   },
   "images": {
     "currentPageScreenshot": "Current Page Screenshot",
@@ -61,7 +60,7 @@
     "placeholder3": "Organize your tabs"
   },
   "welcome": {
-    "title": "Welcome to AIpex",
+    "title": "Welcome to AigentisBrowser",
     "subtitle": "Choose a quick action or ask anything to get started",
     "organizeTabs": "Please organize my open tabs by topic and purpose",
     "analyzePage": "Summarize this page and save key points to clipboard",
