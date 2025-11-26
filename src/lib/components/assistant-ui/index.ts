@@ -1,2 +1,2 @@
 export { Thread } from "./thread";
-export { AIPexRuntimeProvider } from "./runtime-provider";
+export { AigentisBrowserRuntimeProvider } from "./runtime-provider";

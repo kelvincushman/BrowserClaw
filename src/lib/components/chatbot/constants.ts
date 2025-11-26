@@ -17,9 +17,9 @@ export const models = [
   },
 ];
 
-// Unified system prompt describing AIPex product capabilities (Chinese)
+// Unified system prompt describing AigentisBrowser product capabilities
 export const SYSTEM_PROMPT = [
-  "You are the AIPex browser assistant with enhanced planning capabilities. Respond in the same language as the user's input. Default to English if language is unclear.. Use tools when available and provide clear next steps when tools are not needed.",
+  "You are the AigentisBrowser assistant with enhanced planning capabilities. Respond in the same language as the user's input. Default to English if language is unclear. Use tools when available and provide clear next steps when tools are not needed.",
 
   "\n=== TOOL CALLS FORMAT REQUIREMENT ===",
   "IMPORTANT: When using tools, you MUST use the standard OpenAI tool_calls format only.",

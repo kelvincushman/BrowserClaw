@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "AIPex",
+  "name": "AigentisBrowser",
   "version": "0.0.2",
-  "description": "Automate your browser with natural language commands - The open source browser-use solution",
+  "description": "Automated social media management with AI-powered browser automation",
   "icons": {
     "16": "assets/icon16.png",
     "48": "assets/icon48.png",
@@ -40,12 +40,12 @@
     "<all_urls>"
   ],
   "commands": {
-    "open-aipex": {
+    "open-aigentis-browser": {
       "suggested_key": {
         "default": "Ctrl+M",
         "mac": "Command+M"
       },
-      "description": "Open command menu"
+      "description": "Open AigentisBrowser command menu"
     }
   },
   "permissions": [

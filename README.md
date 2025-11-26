@@ -1,202 +1,329 @@
-# 🤖 AIPex - AI-Powered Browser Automation Extension
+# AigentisBrowser
 
-> **The Open Source ChatGPT Atlas - Automate your browser with natural language commands**
+**AI-Powered Social Media Automation & Browser Control Platform**
 
-<div align="right">
-  <a href="README.md">🇺🇸 English</a> | <a href="README.zh-CN.md">🇨🇳 中文</a>
-</div>
-
-[![Chrome Web Store](https://img.shields.io/badge/Chrome%20Web%20Store-Available-brightgreen)](https://chromewebstore.google.com/detail/aipex-%E2%80%94%E2%80%94-tab-history-mana/iglkpadagfelcpmiidndgjgafpdifnke?hl=zh-CN&utm_source=ext_sidebar)
-[![Edge Add-ons](https://img.shields.io/badge/Edge%20Add--ons-Available-blue)](https://microsoftedge.microsoft.com/addons/detail/aipex/fkgfflijckgpphikbceckjbofkicfnfa)
-[![GitHub stars](https://img.shields.io/github/stars/buttercannfly/AIPex?style=social)](https://github.com/buttercannfly/AIPex)
-[![GitHub forks](https://img.shields.io/github/forks/buttercannfly/AIPex?style=social)](https://github.com/buttercannfly/AIPex)
-[![GitHub issues](https://img.shields.io/badge/GitHub-Issues-red)](https://github.com/buttercannfly/AIPex/issues)
-[![GitHub pull requests](https://img.shields.io/badge/GitHub-Pull%20Requests-blue)](https://github.com/buttercannfly/AIPex/pulls)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19.2-20232A?logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![Chrome Extension](https://img.shields.io/badge/Chrome-Manifest%20V3-4285F4?logo=googlechrome&logoColor=white)](https://developer.chrome.com/docs/extensions/mv3/)
+[![MCP](https://img.shields.io/badge/MCP-1.17-blueviolet)](https://modelcontextprotocol.io/)
 
-[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?logo=twitter&logoColor=white)](https://x.com/weikangzhang3)
-[![YouTube](https://img.shields.io/badge/YouTube-FF0000?logo=youtube&logoColor=white)](https://www.youtube.com/@aipex-chrome-extension)
-[![Discord](https://img.shields.io/badge/Discord-7289DA?logo=discord&logoColor=white)](https://discord.gg/sfZC3G5qfe)
+---
 
-<div align="center">
-  **⭐ The Open Source ChatGPT Atlas Alternative ⭐**
-  
-  [![Chrome Web Store](https://img.shields.io/badge/Install%20on%20Chrome%20Web%20Store-blue?logo=google-chrome&logoColor=white)](https://chromewebstore.google.com/detail/aipex-%E2%80%94%E2%80%94-tab-history-mana/iglkpadagfelcpmiidndgjgafpdifnke?hl=zh-CN&utm_source=ext_sidebar)
-  [![Edge Add-ons](https://img.shields.io/badge/Install%20on%20Edge%20Add--ons-blue?logo=microsoft-edge&logoColor=white)](https://microsoftedge.microsoft.com/addons/detail/aipex/fkgfflijckgpphikbceckjbofkicfnfa)
-</div>
+## Overview
 
-## 🤖 What is AIPex?
+AigentisBrowser transforms your Chrome browser into an intelligent automation platform. It combines **AI-powered browser control** with **social media automation**, allowing you to:
 
-AIPex is the **open source alternative to ChatGPT Atlas** - a revolutionary Chrome extension that transforms your browser into an intelligent automation platform. Using **natural language commands** and **AI-powered intelligence**, AIPex can automate virtually any browser task 
+- Research trending topics across LinkedIn, Twitter/X, Instagram, Facebook, and Reddit
+- Generate and post AI-assisted content on autopilot
+- Manage multiple social media accounts from a unified dashboard
+- Control browser automation via natural language or Claude Code terminal
 
-**🎯 Why choose AIPex over ChatGPT Atlas?**
-- ✅ **Free & Open Source** - No subscription fees, full transparency
-- ✅ **No Browser Migration** - Use your existing browser directly
-- ✅ **Privacy Protection** - AIPex never records your data
+## Features
 
-## 📊 Comparison with Similar Projects
+### Browser Automation (114 MCP Tools)
 
-### AIPex vs ChatGPT Atlas vs Dia/Comet vs Manus Browser Operator Solutions
+| Category | Tools | Description |
+|----------|-------|-------------|
+| **Tab Management** | 8 | Create, switch, duplicate, close, organize tabs |
+| **Page Content** | 8 | Extract text, links, metadata, interactive elements |
+| **Form Automation** | 5 | Fill inputs, submit forms, get values |
+| **DOM Manipulation** | 4 | Click, scroll, highlight elements |
+| **Screenshots** | 5 | Capture tabs, save to clipboard, download |
+| **Tab Groups** | 5 | AI-powered automatic tab grouping |
+| **Bookmarks** | 5 | Create, search, manage bookmarks |
+| **History** | 4 | Search and manage browsing history |
+| **Windows** | 7 | Multi-window management |
+| **Downloads** | 10 | Download management and file operations |
+| **Storage** | 12 | Extension settings and data management |
+| **Utilities** | 11 | URL validation, text processing, system info |
 
-| Feature | AIPex | ChatGPT Atlas | Comet (Dia) | Manus Browser Operator |
-|---------|-------|---------------|-------------|------------------|
-| **Pricing & Open Source** | ✅ Free and open source | ❌ Paid and closed source | ❌ Paid and closed source | ❌ Paid and closed source |
-| **Browser Migration Cost** | ✅ No migration needed, use existing browser | ❌ Requires browser migration | ❌  Install separate browser |  ✅ No migration needed, use existing browser |
-| **Ease of Use** | ✅ No technical knowledge needed | ⚠️ Adapt to new browser | ⚠️ Adapt to new browser | ⚠️ Requires technical setup |
-| **Privacy** | ✅ Privacy protected | ⚠️ No | ⚠️ No | ⚠️ No |
-| **BYOK** | ✅ Yes | ❌ No | ❌ No | ❌ No |
+### Social Media Automation
 
-## 🚀 Do Amazing with AIPex
+| Feature | Platforms | Description |
+|---------|-----------|-------------|
+| **Trend Research** | Twitter, LinkedIn, Instagram, Reddit | Real-time trending topic detection |
+| **Content Generation** | All | AI-powered post drafts, replies, threads |
+| **Auto-Engagement** | All | Automated likes, replies, shares |
+| **Scheduling** | All | Queue posts for optimal timing |
+| **Analytics** | All | Track engagement metrics |
+| **Multi-Account** | All | Manage multiple accounts per platform |
 
-### 1. "Organize my tabs by topic"
+### Dashboard UI Components
 
-https://github.com/user-attachments/assets/4a4f2a64-691c-4783-965e-043b329a8035
+- **Account Hub** - Connect and manage social media accounts with OAuth 2.0
+- **Trend Dashboard** - Real-time trending topics with category filtering
+- **Autopilot Control** - Configure automated engagement rules and review queue
+- **Post Composer** - AI-assisted content creation with hashtag optimization
 
-### 2. "Use google to research MCP"
+### MCP Server Integration
 
-https://github.com/user-attachments/assets/71ec4efd-d80e-4e8f-8e39-88baee3ec38e
+Connect AigentisBrowser to Claude Code for terminal-based browser control:
 
-### 3. "write a twitter to say hello"
+```bash
+# Example commands in Claude Code
+> Use aigentis-browser to check what's trending on LinkedIn
+> Draft a Twitter thread about AI agents
+> Post this to my connected accounts: "Exciting announcement..."
+```
 
-https://github.com/user-attachments/assets/81f6b482-84d0-4fd9-924b-dca634b208ec
+## Installation
 
-### 4. "please help me pass the exam"
+### Chrome Extension
 
-https://github.com/user-attachments/assets/ba454715-c759-41df-bf87-e835f76be365
+```bash
+# Clone the repository
+git clone https://github.com/kelvincushman/AigenitsBrowser.git
+cd AigenitsBrowser
 
-## 🚀 Getting Started
+# Install dependencies
+pnpm install
+
+# Build for production
+pnpm run build
+
+# Load in Chrome:
+# 1. Open chrome://extensions/
+# 2. Enable "Developer mode"
+# 3. Click "Load unpacked"
+# 4. Select build/chrome-mv3-prod
+```
+
+### MCP Server (for Claude Code)
+
+```bash
+# Install and build
+cd mcp-server
+npm install
+npm run build
+
+# Configure Claude Code (~/.config/claude-code/mcp.json)
+{
+  "mcpServers": {
+    "aigentis-browser": {
+      "command": "node",
+      "args": ["/path/to/AigenitsBrowser/mcp-server/dist/index.js"]
+    }
+  }
+}
+```
+
+## Usage
 
 ### Quick Start
-1. **Install from Chrome Web Store** (Recommended)
-   - [Click here to install](https://chromewebstore.google.com/detail/aipex-%E2%80%94%E2%80%94-tab-history-mana/iglkpadagfelcpmiidndgjgafpdifnke?hl=zh-CN&utm_source=ext_sidebar)
-   
-   **Or install from Edge Add-ons**
-   - [Click here to install from Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/aipex/fkgfflijckgpphikbceckjbofkicfnfa)
 
-2. **Open AIPex**
-   - Press `⌘+M` (Mac) or `Ctrl+M` (Windows/Linux)
-   - Or click the AIPex icon in your toolbar
+1. **Install Extension** - Load the built extension in Chrome
+2. **Configure AI** - Set your API key (OpenAI, Claude, or DeepSeek) in settings
+3. **Open AigentisBrowser** - Press `Ctrl+M` (Windows/Linux) or `Cmd+M` (Mac)
+4. **Start Automating** - Use natural language commands or the dashboard
 
-## 🛠️ Development & Contributing
+### Keyboard Shortcuts
 
-We love contributions! Here's how you can help make AIPex even better:
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl/Cmd + M` | Open AigentisBrowser command palette |
+| `Alt + Shift + P` | Pin/Unpin current tab |
+| `Alt + Shift + M` | Mute/Unmute current tab |
+| `Alt + Shift + D` | Duplicate current tab |
 
-📖 **For detailed development setup, build instructions, and contribution guidelines, please see [DEVELOPMENT.md](DEVELOPMENT.md)**
+### Example Commands
 
+```
+"Organize my tabs by topic using AI"
+"Extract all links from this page and save as markdown"
+"Fill the contact form with my saved details"
+"What's trending on Twitter in technology?"
+"Draft a LinkedIn post about remote work trends"
+"Schedule this post for tomorrow at 9 AM"
+```
 
-## 📊 Tool Categories Overview
+## Architecture
 
-<details>
-<summary>🗂️ <strong>Tab Management</strong> - 8 tools</summary>
+```
+AigenitsBrowser/
+├── src/
+│   ├── background.ts          # Service worker (extension core)
+│   ├── content.tsx            # Content script (page interaction)
+│   ├── sidepanel.tsx          # Side panel UI entry
+│   ├── mcp/                   # MCP client implementation
+│   │   ├── client.ts          # Browser MCP client (1,400+ lines)
+│   │   └── index.ts           # Tool routing
+│   ├── mcp-servers/           # Tool implementations
+│   │   ├── tab-management.ts
+│   │   ├── page-content.ts
+│   │   ├── social-media/      # Social media automation
+│   │   └── ...
+│   └── lib/
+│       ├── components/
+│       │   ├── chatbot/       # AI chat interface
+│       │   └── dashboard/     # Social media dashboard
+│       ├── security/          # Credential encryption
+│       └── oauth/             # OAuth 2.0 handlers
+├── mcp-server/                # Standalone MCP server
+│   ├── src/
+│   │   ├── index.ts           # Server entry point
+│   │   ├── browser-bridge.ts  # WebSocket communication
+│   │   └── tools/registry.ts  # Tool definitions
+│   └── package.json
+└── docs/
+    └── PRD-AI-Social-Media-Agent.md
+```
 
-Complete tab control and navigation:
-- `get_all_tabs` - Get all open tabs across all windows
-- `get_current_tab` - Get information about the currently active tab  
-- `switch_to_tab` - Switch to a specific tab by ID
-- `create_new_tab` - Create a new tab with the specified URL
-- `get_tab_info` - Get detailed information about a specific tab
-- `duplicate_tab` - Duplicate an existing tab
-- `close_tab` - Close a specific tab
-- `get_current_tab_content` - Get the visible text content of the current tab
+## Technology Stack
 
-</details>
+| Layer | Technology |
+|-------|------------|
+| **Frontend** | React 19, TypeScript 5.3, Tailwind CSS 4 |
+| **Extension** | Chrome Manifest V3, Service Worker |
+| **AI Integration** | MCP SDK 1.17, OpenAI API, Claude API |
+| **UI Components** | Radix UI, Ant Design X, Lucide Icons |
+| **Build** | Vite 7, CRXJS, pnpm |
+| **Security** | AES-256-GCM, PBKDF2, OAuth 2.0 + PKCE |
 
-<details>
-<summary>📄 <strong>Page Content & Interaction</strong> - 14 tools</summary>
+## Security
 
-Content extraction, analysis, and page interaction:
-- `get_page_metadata` - Get page metadata including title, description, keywords
-- `extract_page_text` - Extract text content with word count and reading time
-- `get_page_links` - Get all links from the current page
-- `search_page_text` - Search for text on the current page
-- `get_interactive_elements` - Get all interactive elements (links, buttons, inputs) with optimized performance
-- `click_element` - Click an element using CSS selector
-- `summarize_page` - Summarize page content with key points
-- `fill_input` - Fill an input field with text
-- `clear_input` - Clear the content of an input field
-- `get_input_value` - Get the current value of an input field
-- `submit_form` - Submit a form using CSS selector
-- `get_form_elements` - Get all form elements and input fields
-- `scroll_to_element` - Scroll to a DOM element and center it
-- `highlight_element` - Permanently highlight DOM elements
-- `highlight_text_inline` - Highlight specific words or phrases within text
+### Credential Storage
+- All OAuth tokens encrypted at rest with AES-256-GCM
+- Master password protection with PBKDF2 (600K iterations)
+- Per-credential random IVs
+- Automatic token refresh
 
-</details>
+### Permissions
+The extension requests these Chrome permissions:
+- `tabs`, `windows`, `tabGroups` - Tab management
+- `activeTab`, `scripting` - Page interaction
+- `storage` - Settings and credentials
+- `bookmarks`, `history` - Browser data access
+- `downloads` - File operations
+- `identity` - OAuth authentication
 
-<details>
-<summary>⬇️ <strong>Downloads & Files</strong> - 4 tools</summary>
+## Configuration
 
-Download control and file management:
-- `download_text_as_markdown` - Download text content as markdown file
-- `download_image` - Download an image from base64 data
-- `download_chat_images` - Download multiple images from chat messages
-- `download_current_chat_images` - Download all images from current AI chat
+### AI Provider Setup
 
-</details>
+1. Open extension settings (click extension icon)
+2. Select your AI provider:
+   - **OpenAI** - GPT-4, GPT-4 Turbo
+   - **Anthropic** - Claude Sonnet 4, Claude Sonnet 4.5
+   - **DeepSeek** - DeepSeek Chat
+3. Enter your API key
+4. (Optional) Configure custom endpoint for self-hosted models
 
-<details>
-<summary>📸 <strong>Screenshots</strong> - 3 tools</summary>
+### Social Media OAuth
 
-Visual capture and screenshot management:
-- `capture_screenshot` - Capture screenshot of current visible tab
-- `capture_tab_screenshot` - Capture screenshot of a specific tab by ID
-- `capture_screenshot_to_clipboard` - Capture screenshot and save to clipboard
+1. Navigate to Account Hub in the dashboard
+2. Click "Add Account"
+3. Select platform (Twitter, LinkedIn, Instagram, Facebook, Reddit)
+4. Complete OAuth flow in popup
+5. Account tokens are encrypted and stored locally
 
-</details>
+## Development
 
-<details>
-<summary>🔧 <strong>Advanced Features</strong> - 3+ tools</summary>
+```bash
+# Start development server with hot reload
+pnpm run dev
 
-Advanced browser automation and utilities:
-- Additional specialized tools for enhanced browser control
-- AI-powered content analysis and processing
-- Custom automation workflows
+# Build production extension
+pnpm run build
 
-</details>
+# Build MCP server
+cd mcp-server && npm run build
 
-## 📄 License
+# Type check
+pnpm exec tsc --noEmit
+```
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## API Reference
 
-## 🙏 Support & Community
+### MCP Tools (Social Media)
 
-- 🐛 **Found a bug?** [Open an issue](https://github.com/buttercannfly/AIPex/issues)
-- 💡 **Have a feature request?** [Start a discussion](https://github.com/buttercannfly/AIPex/discussions)
-- 🤝 **Want to contribute?** See our [Contributing Guide](DEVELOPMENT.md#how-to-contribute)
-- 💬 **Need help?** [Join our community discussions](https://github.com/buttercannfly/AIPex/discussions)
+```typescript
+// Post to platform
+{
+  tool: "post_to_platform",
+  args: {
+    platform: "twitter" | "linkedin" | "instagram" | "facebook",
+    content: "Your post content",
+    hashtags: ["#AI", "#Tech"],
+    scheduledTime: "2025-01-15T09:00:00Z" // optional
+  }
+}
 
-## 🏆 Contributors
+// Get trending topics
+{
+  tool: "get_trending_topics",
+  args: {
+    platforms: ["twitter", "linkedin"],
+    category: "technology",
+    limit: 10
+  }
+}
 
-Thank you to all the amazing contributors who help make AIPex better:
+// Generate reply suggestions
+{
+  tool: "generate_reply_suggestions",
+  args: {
+    postUrl: "https://twitter.com/user/status/123",
+    tone: "professional",
+    count: 3
+  }
+}
+```
 
-<a href="https://github.com/buttercannfly/AIPex/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=buttercannfly/AIPex" />
-</a>
+### MCP Tools (Browser)
 
-*Contributors are automatically updated from GitHub. Click to see detailed contribution statistics.*
+```typescript
+// Fill form input
+{
+  tool: "fill_input",
+  args: {
+    selector: "#email",
+    text: "user@example.com"
+  }
+}
+
+// Extract page content
+{
+  tool: "extract_page_text",
+  args: {}
+}
+
+// Capture screenshot
+{
+  tool: "capture_screenshot",
+  args: {}
+}
+```
+
+## Roadmap
+
+- [ ] Firefox extension support
+- [ ] Mobile companion app
+- [ ] Advanced analytics dashboard
+- [ ] Team collaboration features
+- [ ] Webhook integrations
+- [ ] Custom automation workflows
+
+## Contributing
+
+Contributions are welcome! Please read our contributing guidelines before submitting PRs.
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
+## Support
+
+- **Issues**: [GitHub Issues](https://github.com/kelvincushman/AigenitsBrowser/issues)
+- **Documentation**: [PRD](docs/PRD-AI-Social-Media-Agent.md)
+- **MCP Server Docs**: [mcp-server/README.md](mcp-server/README.md)
 
 ---
 
-*Want to contribute? Check out our [Contributing Guide](DEVELOPMENT.md#how-to-contribute) and help make AIPex even better!*
-
-## 🌟 Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=buttercannfly/AIPex&type=Date)](https://star-history.com/#buttercannfly/AIPex&Date)
-
----
-
-<div align="center">
-  <strong>Made with ❤️ by the AIPex Team</strong>
-  
-  [![GitHub](https://img.shields.io/badge/GitHub-100000?logo=github&logoColor=white)](https://github.com/buttercannfly/AIPex)
-  [![Chrome Web Store](https://img.shields.io/badge/Chrome%20Web%20Store-4285F4?logo=google-chrome&logoColor=white)](https://chromewebstore.google.com/detail/aipex-%E2%80%94%E2%80%94-tab-history-mana/iglkpadagfelcpmiidndgjgafpdifnke?hl=zh-CN&utm_source=ext_sidebar)
-  [![Edge Add-ons](https://img.shields.io/badge/Edge%20Add--ons-0078D4?logo=microsoft-edge&logoColor=white)](https://microsoftedge.microsoft.com/addons/detail/aipex/fkgfflijckgpphikbceckjbofkicfnfa)
-  
-  **📱 Follow us on social media:**
-  
-  [![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?logo=twitter&logoColor=white)](https://x.com/weikangzhang3)
-  [![YouTube](https://img.shields.io/badge/YouTube-FF0000?logo=youtube&logoColor=white)](https://www.youtube.com/@aipex-chrome-extension)
-  [![Discord](https://img.shields.io/badge/Discord-7289DA?logo=discord&logoColor=white)](https://discord.gg/sfZC3G5qfe)
-</div>
+**Built for the future of social media automation**

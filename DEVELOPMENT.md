@@ -1,6 +1,6 @@
 # 🛠️ Development Guide
 
-This document contains all the information you need to set up and contribute to AIPex development.
+This document contains all the information you need to set up and contribute to AigentisBrowser development.
 
 ## 🏗️ Local Development Setup
 
@@ -11,7 +11,7 @@ This document contains all the information you need to set up and contribute to 
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/AIPexStudio/AIPex.git
+git clone https://github.com/kelvincushman/AIPex.git
 cd AIPex
 ```
 

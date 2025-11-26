@@ -1,15 +1,15 @@
 {
-  "name": "@aipexstudio/cool-aipex",
-  "displayName": "AIPex",
+  "name": "@aigentis/aigentis-browser",
+  "displayName": "AigentisBrowser",
   "version": "0.0.2",
-  "description": "Automate your browser with natural language commands - The open source browser-use solution",
-  "author": "Plasmo Corp. <foss@plasmo.com>",
+  "description": "Automated social media management with AI-powered browser automation",
+  "author": "AigentisBrowser",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AIPexStudio/aipex-whole.git"
+    "url": "git+https://github.com/kelvincushman/AIPex.git"
   },
   "scripts": {
     "dev": "vite",
@@ -95,7 +95,7 @@
       "<all_urls>"
     ],
     "commands": {
-      "open-aipex": {
+      "open-aigentis-browser": {
         "suggested_key": {
           "default": "Ctrl+M",
           "mac": "Command+M"
