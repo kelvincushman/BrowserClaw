@@ -1,4 +1,8 @@
 import { Storage } from "~/lib/storage"
+import { handleSocialMediaMessage, initializeSocialMediaIntegration } from "~/lib/social-media-integration"
+
+// Initialize social media integration module
+initializeSocialMediaIntegration()
 
 // Asset URLs for extension resources
 const logoNotion = chrome.runtime.getURL("assets/logo-notion.png")
@@ -1665,6 +1669,25 @@ let selectedTextForSidepanel = "";
 
 // background message listener
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  // Try to handle social media messages first
+  handleSocialMediaMessage(message, sender, sendResponse).then((handled) => {
+    // If handled by social media module, the response was already sent
+    if (handled) return;
+  });
+
+  // Check if it's a social media request that needs async handling
+  const socialMediaRequests = [
+    "unlock-credential-store", "lock-credential-store", "is-credential-store-unlocked",
+    "start-oauth-flow", "refresh-oauth-token", "revoke-oauth-access",
+    "save-oauth-credentials", "has-oauth-credentials",
+    "list-social-accounts", "get-account-status", "disconnect-account",
+    "get-trending-topics", "post-to-platform", "reply-to-post",
+    "like-post", "get-feed-posts", "mcp_tool_call"
+  ];
+  if (socialMediaRequests.includes(message.request)) {
+    return true; // Keep channel open for async response
+  }
+
   switch (message.request) {
     case "get-actions":
       console.log("Background: Received get-actions request")
