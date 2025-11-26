@@ -37,4 +37,8 @@ keys.json
 
 # typescript
 .tsbuildinfo
-*.zipmcp-server/node_modules/
+*.zip
+
+# MCP server
+mcp-server/node_modules/
+mcp-server/dist/
