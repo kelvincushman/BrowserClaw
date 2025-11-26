@@ -2404,5 +2404,12 @@ async function downloadChatImagesInBackground(
   }
 }
 
+// Initialize Native Messaging for MCP Server communication
+import { initializeNativeMessaging } from "~/lib/native-messaging-host"
+
+// Initialize on extension startup
+initializeNativeMessaging()
+console.log('[AigentisBrowser] Native messaging initialized for MCP server connection')
+
 // Initialize actions
 resetOmni()
