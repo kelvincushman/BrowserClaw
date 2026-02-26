@@ -1,4 +1,5 @@
 import { Storage } from "~/lib/storage"
+import { getOpenClawRelay, initializeOpenClawRelay } from "~/lib/openclaw-relay"
 import { handleSocialMediaMessage, initializeSocialMediaIntegration } from "~/lib/social-media-integration"
 
 // Initialize social media integration module
@@ -203,7 +204,7 @@ const clearActions = async () => {
     { title: "Fullscreen", desc: "Make the page fullscreen", type: "action", action: "fullscreen", emoji: true, emojiChar: "🖥", keycheck: true, keys: ['⌘', 'Ctrl', 'F'] },
     muteaction,
     { title: "Reload", desc: "Reload the page", type: "action", action: "reload", emoji: true, emojiChar: "♻️", keycheck: true, keys: ['⌘', '⇧', 'R'] },
-    { title: "Help", desc: "Get help with AigentisBrowser on GitHub", type: "action", action: "url", url: "https://github.com/kelvincushman/AIPex", emoji: true, emojiChar: "🤔", keycheck: false },
+    { title: "Help", desc: "Get help with BrowserClaw on GitHub", type: "action", action: "url", url: "https://github.com/kelvincushman/AIPex", emoji: true, emojiChar: "🤔", keycheck: false },
     { title: "Compose email", desc: "Compose a new email", type: "action", action: "email", emoji: true, emojiChar: "✉️", keycheck: true, keys: ['⌥', '⇧', 'C'] },
     { title: "Print page", desc: "Print the current page", type: "action", action: "print", emoji: true, emojiChar: "🖨️", keycheck: true, keys: ['⌘', 'P'] },
     { title: "New Notion page", desc: "Create a new Notion page", type: "action", action: "url", url: "https://notion.new", emoji: false, favIconUrl: logoNotion, keycheck: false },
@@ -308,33 +309,116 @@ const clearActions = async () => {
   }
 }
 
-// Open on install
-chrome.runtime.onInstalled.addListener((object) => {
+// Open on install & configure relay
+chrome.runtime.onInstalled.addListener(async (object) => {
   // Plasmo/Manifest V3: Cannot directly inject scripts using content_scripts field, need scripting API
   if (object.reason === "install") {
     chrome.tabs.create({ url: "https://github.com/kelvincushman/AIPex" })
   }
+
+  // Pre-store gateway token & enable relay so it auto-connects
+  const stored = await chrome.storage.local.get(["gatewayToken"])
+  if (!stored.gatewayToken) {
+    await chrome.storage.local.set({
+      gatewayToken: "62b294b5d967f33d08be3f10f6092d37fe2b76d69e57c3a4",
+      openclawRelayEnabled: true,
+      relayPort: 18792,
+    })
+    console.log("[BrowserClaw] Pre-configured relay gateway token")
+  }
+
+  // Create context menu for relay control
+  chrome.contextMenus.removeAll(() => {
+    chrome.contextMenus.create({
+      id: "openclaw-relay-connect",
+      title: "Connect OpenClaw Relay",
+      contexts: ["action"],
+    })
+    chrome.contextMenus.create({
+      id: "openclaw-relay-disconnect",
+      title: "Disconnect OpenClaw Relay",
+      contexts: ["action"],
+    })
+    chrome.contextMenus.create({
+      id: "openclaw-relay-status",
+      title: "Relay Status",
+      contexts: ["action"],
+    })
+  })
 })
 
-// Extension button click
-chrome.action.onClicked.addListener((tab) => {
-  if (tab.id) {
-    // Open AI Chat sidepanel directly when clicking the toolbar icon
-    chrome.sidePanel.open({ tabId: tab.id })
+// Prevent sidepanel from intercepting toolbar clicks
+chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false }).catch(() => {})
+
+// Context menu handler for relay control
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+  const relay = getOpenClawRelay()
+
+  switch (info.menuItemId) {
+    case "openclaw-relay-connect": {
+      try {
+        await relay.connect()
+        console.log("[BrowserClaw] Relay connected via context menu")
+      } catch (err) {
+        console.error("[BrowserClaw] Relay connect failed:", err)
+      }
+      break
+    }
+    case "openclaw-relay-disconnect": {
+      relay.disconnect()
+      console.log("[BrowserClaw] Relay disconnected via context menu")
+      break
+    }
+    case "openclaw-relay-status": {
+      const status = relay.getStatus()
+      const sessions = relay.getSessions()
+      console.log(`[BrowserClaw] Relay status: ${status}, sessions: ${sessions.size}`)
+      // Show badge text briefly
+      chrome.action.setBadgeText({ text: status === "connected" ? "ON" : "OFF" })
+      chrome.action.setBadgeBackgroundColor({
+        color: status === "connected" ? "#22c55e" : "#6b7280",
+      })
+      break
+    }
   }
+})
+
+// Extension toolbar button click — toggle relay connection
+chrome.action.onClicked.addListener(async (tab) => {
+  const relay = getOpenClawRelay()
+  const status = relay.getStatus()
+
+  if (status === 'connected') {
+    // Connected — disconnect
+    relay.disconnect()
+    console.log('[BrowserClaw] Relay disconnected via toolbar click')
+  } else if (status === 'disconnected') {
+    // Disconnected — connect
+    try {
+      await relay.connect()
+      console.log('[BrowserClaw] Relay connected via toolbar click')
+      // Auto-attach the current tab
+      if (tab?.id) {
+        await relay.attachTab(tab.id)
+      }
+    } catch (err) {
+      console.error('[BrowserClaw] Relay connect failed:', err)
+    }
+  }
+  // If 'connecting', do nothing — let it finish
 })
 
 // Shortcut listener
 chrome.commands.onCommand.addListener((command) => {
-  if (command === "open-aigentis-browser") {
+  if (command === "open-browserclaw") {
     getCurrentTab().then((response) => {
       if (!response?.url?.includes("chrome://") && !response?.url?.includes("chrome.google.com")) {
-        console.log("open-aigentis-browser")
-        chrome.tabs.sendMessage(response.id!, { request: "open-aigentis-browser" })
+        console.log("open-browserclaw")
+        chrome.tabs.sendMessage(response.id!, { request: "open-browserclaw" })
       } else {
         // Open a new tab with our custom new tab page
         chrome.tabs.create({ url: "chrome://newtab" }).then((tab) => {
-          console.log("open-aigentis-browser-new-tab")
+          console.log("open-browserclaw-new-tab")
           newtaburl = response?.url || ""
           chrome.tabs.remove(response.id!)
         })
@@ -2426,6 +2510,81 @@ async function downloadChatImagesInBackground(
     }
   }
 }
+
+// Initialize Native Messaging for MCP Server communication
+import { initializeNativeMessaging } from "~/lib/native-messaging-host"
+
+// Initialize on extension startup
+initializeNativeMessaging()
+console.log('[BrowserClaw] Native messaging initialized for MCP server connection')
+
+// ---------------------------------------------------------------------------
+// OpenClaw Relay Integration
+// ---------------------------------------------------------------------------
+
+// Initialize relay on startup (if configured)
+initializeOpenClawRelay().catch((err) => {
+  console.warn('[BrowserClaw] OpenClaw relay init error:', err)
+})
+
+// MV3 keepalive alarm handler for relay
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === 'openclaw-relay-keepalive') {
+    getOpenClawRelay().handleKeepaliveAlarm()
+  }
+})
+
+// Runtime message handler for relay control from sidepanel/popup
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  if (message?.type !== 'openclaw-relay') return false
+
+  const relay = getOpenClawRelay()
+
+  const handleAsync = async () => {
+    switch (message.action) {
+      case 'connect': {
+        await relay.connect({
+          port: message.port,
+          gatewayToken: message.gatewayToken,
+        })
+        return { success: true, status: relay.getStatus() }
+      }
+      case 'disconnect': {
+        relay.disconnect()
+        return { success: true, status: 'disconnected' }
+      }
+      case 'status': {
+        return {
+          success: true,
+          status: relay.getStatus(),
+          sessions: Array.from(relay.getSessions().entries()).map(([sid, info]) => ({
+            sessionId: sid,
+            tabId: info.tabId,
+            targetId: info.targetId,
+          })),
+        }
+      }
+      case 'attachTab': {
+        const result = await relay.attachTab(message.tabId)
+        return { success: true, ...result }
+      }
+      case 'detachTab': {
+        await relay.detachTab(message.tabId, 'manual')
+        return { success: true }
+      }
+      default:
+        return { success: false, error: `Unknown action: ${message.action}` }
+    }
+  }
+
+  handleAsync().then(sendResponse).catch((err) => {
+    sendResponse({ success: false, error: err?.message || String(err) })
+  })
+
+  return true // async sendResponse
+})
+
+console.log('[BrowserClaw] OpenClaw relay integration initialized')
 
 // Initialize actions
 resetOmni()

@@ -1,2 +1,2 @@
 export { Thread } from "./thread";
-export { AigentisBrowserRuntimeProvider } from "./runtime-provider";
+export { BrowserClawRuntimeProvider } from "./runtime-provider";

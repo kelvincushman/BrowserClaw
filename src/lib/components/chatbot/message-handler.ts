@@ -16,6 +16,7 @@ export interface MessageHandlerConfig {
   initialTools?: AITool[];
   initialAiHost?: string;
   initialAiToken?: string;
+  customHeaders?: Record<string, string>;
 }
 
 export class MessageHandler {
@@ -32,6 +33,7 @@ export class MessageHandler {
   private tools: AITool[];
   private aiHost: string;
   private aiToken: string;
+  private customHeaders: Record<string, string>;
   // Pub/Sub
   private subscribers: Map<EventType, Set<Subscriber>> = new Map();
 
@@ -46,6 +48,7 @@ export class MessageHandler {
     this.tools = config.initialTools || [];
     this.aiHost = config.initialAiHost || "https://api.deepseek.com/chat/completions";
     this.aiToken = config.initialAiToken || "";
+    this.customHeaders = config.customHeaders || {};
   }
 
   // --- Pub/Sub Methods ---
@@ -133,6 +136,9 @@ export class MessageHandler {
     }
     if (config.initialAiToken) {
       this.aiToken = config.initialAiToken;
+    }
+    if (config.customHeaders) {
+      this.customHeaders = config.customHeaders;
     }
   }
 
@@ -879,6 +885,7 @@ export class MessageHandler {
           "content-type": "application/json",
           accept: "text/event-stream",
           Authorization: `Bearer ${this.aiToken}`,
+          ...this.customHeaders,
         },
         body: JSON.stringify({
           model: this.model,

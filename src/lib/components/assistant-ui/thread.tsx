@@ -1082,7 +1082,7 @@ export const Thread: FC = () => {
         <div className="max-w-2xl mx-auto">
           {messages.length === 0 ? (
             <div className="text-center py-8">
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Welcome to AigentisBrowser</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Welcome to BrowserClaw</h3>
               <p className="text-gray-600">Choose a quick action or ask anything to get started</p>
               
               

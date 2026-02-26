@@ -1,11 +1,11 @@
 import { AssistantRuntimeProvider } from "@assistant-ui/react";
 import type { FC, ReactNode } from "react";
 
-interface AigentisBrowserRuntimeProviderProps {
+interface BrowserClawRuntimeProviderProps {
   children: ReactNode;
 }
 
-export const AigentisBrowserRuntimeProvider: FC<AigentisBrowserRuntimeProviderProps> = ({ children }) => {
+export const BrowserClawRuntimeProvider: FC<BrowserClawRuntimeProviderProps> = ({ children }) => {
   // Temporarily render children directly, will integrate full runtime later
   return <>{children}</>;
 };

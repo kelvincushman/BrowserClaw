@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "browserclaw": {
+      "command": "python3",
+      "args": ["/path/to/AigenitsBrowser/mcp-server/server.py"],
+      "env": {
+        "BROWSERCLAW_BRIDGE_URL": "http://localhost:9333",
+        "BROWSERCLAW_BRIDGE_TOKEN": ""
+      }
+    }
+  }
+}

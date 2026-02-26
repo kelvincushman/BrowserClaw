@@ -1,25 +1,53 @@
 export const models = [
+  // Anthropic Claude
   {
-    name: "deepseek-3.2",
+    name: "Claude Opus 4.6",
+    value: "claude-opus-4-6",
+  },
+  {
+    name: "Claude Sonnet 4.6",
+    value: "claude-sonnet-4-6",
+  },
+  {
+    name: "Claude Haiku 4.5",
+    value: "claude-haiku-4-5-20251001",
+  },
+  // OpenAI
+  {
+    name: "GPT-4o",
+    value: "gpt-4o",
+  },
+  {
+    name: "GPT-4o Mini",
+    value: "gpt-4o-mini",
+  },
+  {
+    name: "o3",
+    value: "o3",
+  },
+  {
+    name: "o4-mini",
+    value: "o4-mini",
+  },
+  // xAI
+  {
+    name: "Grok 3",
+    value: "grok-3",
+  },
+  {
+    name: "Grok 3 Mini",
+    value: "grok-3-mini",
+  },
+  // DeepSeek
+  {
+    name: "DeepSeek V3",
     value: "deepseek-chat",
-  },
-  {
-    name: "claude-4-sonnet",
-    value: "claude-sonnet-4-20250514",
-  },
-  {
-    name: "claude-4.5-sonnet",
-    value: "claude-sonnet-4-5-20250929",
-  },
-  {
-    name: "gpt-5",
-    value: "gpt-5",
   },
 ];
 
-// Unified system prompt describing AigentisBrowser product capabilities
+// Unified system prompt describing BrowserClaw product capabilities
 export const SYSTEM_PROMPT = [
-  "You are the AigentisBrowser assistant with enhanced planning capabilities. Respond in the same language as the user's input. Default to English if language is unclear. Use tools when available and provide clear next steps when tools are not needed.",
+  "You are the BrowserClaw assistant with enhanced planning capabilities. Respond in the same language as the user's input. Default to English if language is unclear. Use tools when available and provide clear next steps when tools are not needed.",
 
   "\n=== TOOL CALLS FORMAT REQUIREMENT ===",
   "IMPORTANT: When using tools, you MUST use the standard OpenAI tool_calls format only.",

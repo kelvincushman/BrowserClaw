@@ -1,0 +1,7 @@
+{
+  "bridge_url": "http://localhost:9333",
+  "bridge_token": "",
+  "tool_cache_ttl_seconds": 300,
+  "request_timeout_seconds": 30,
+  "log_level": "INFO"
+}
