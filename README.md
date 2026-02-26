@@ -82,12 +82,12 @@ npm run build
 The bridge server runs alongside Chrome and proxies HTTP requests to the extension via native messaging:
 
 ```bash
-cd aigentis-bridge
+cd browserclaw-bridge
 python3 bridge-server.py
 # Listens on 0.0.0.0:9333
 ```
 
-Configure in `aigentis-bridge/config.json`:
+Configure in `browserclaw-bridge/config.json`:
 ```json
 {
   "port": 9333,

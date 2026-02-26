@@ -1246,31 +1246,31 @@ export async function highlightElement(selector: string, options?: {
         })
 
         // Create unique highlight ID
-        const highlightId = `aigentis-highlight-${Date.now()}`
+        const highlightId = `browserclaw-highlight-${Date.now()}`
         element.setAttribute('data-highlight-id', highlightId)
 
         // Get element position for overlay calculations
         const elementRect = element.getBoundingClientRect()
 
         // Insert CSS styles if not already present
-        if (!document.getElementById('aigentis-highlight-styles')) {
+        if (!document.getElementById('browserclaw-highlight-styles')) {
           const styleSheet = document.createElement('style')
-          styleSheet.id = 'aigentis-highlight-styles'
+          styleSheet.id = 'browserclaw-highlight-styles'
           styleSheet.textContent = `
-            .aigentis-highlight-shadow {
+            .browserclaw-highlight-shadow {
               filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.8));
               transition: all 0.3s ease;
             }
             
-            .aigentis-highlight-shadow.subtle {
+            .browserclaw-highlight-shadow.subtle {
               filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));
             }
 
-            .aigentis-highlight-shadow.normal {
+            .browserclaw-highlight-shadow.normal {
               filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.8));
             }
 
-            .aigentis-highlight-shadow.strong {
+            .browserclaw-highlight-shadow.strong {
               filter: drop-shadow(0 0 25px rgba(0, 212, 255, 1));
             }
           `
@@ -1284,7 +1284,7 @@ export async function highlightElement(selector: string, options?: {
         })
 
         // Apply shadow highlight style
-        element.classList.add('aigentis-highlighted', 'aigentis-highlight-shadow', intensity)
+        element.classList.add('browserclaw-highlighted', 'browserclaw-highlight-shadow', intensity)
         
         if (highlightColor !== '#00d4ff') {
           const rgb = hexToRgb(highlightColor) || {r: 0, g: 212, b: 255}
@@ -1307,7 +1307,7 @@ export async function highlightElement(selector: string, options?: {
             })
             
             // Remove highlight classes
-            element.classList.remove('aigentis-highlighted', 'aigentis-highlight-shadow', 'subtle', 'normal', 'strong')
+            element.classList.remove('browserclaw-highlighted', 'browserclaw-highlight-shadow', 'subtle', 'normal', 'strong')
             
             element.removeAttribute('data-highlight-id')
           }, highlightDuration)
@@ -1405,11 +1405,11 @@ export async function highlightTextInline(selector: string, searchText: string, 
         let totalMatches = 0
 
         // Create highlight styles if not already present
-        if (!document.getElementById('aigentis-text-highlight-styles')) {
+        if (!document.getElementById('browserclaw-text-highlight-styles')) {
           const styleSheet = document.createElement('style')
-          styleSheet.id = 'aigentis-text-highlight-styles'
+          styleSheet.id = 'browserclaw-text-highlight-styles'
           styleSheet.textContent = `
-            .aigentis-text-highlight {
+            .browserclaw-text-highlight {
               color: ${highlightColor} !important;
               background-color: ${backgroundColor} !important;
               font-weight: ${fontWeight} !important;
@@ -1418,7 +1418,7 @@ export async function highlightTextInline(selector: string, searchText: string, 
               transition: all 0.2s ease;
             }
             
-            .aigentis-text-highlight:hover {
+            .browserclaw-text-highlight:hover {
               background-color: rgba(220, 20, 60, 0.1) !important;
             }
           `
@@ -1445,7 +1445,7 @@ export async function highlightTextInline(selector: string, searchText: string, 
 
           // Create replacement HTML
           const highlightedText = text.replace(pattern, (match) => {
-            return `<span class="aigentis-text-highlight" data-highlight-text="${searchText}">${match}</span>`
+            return `<span class="browserclaw-text-highlight" data-highlight-text="${searchText}">${match}</span>`
           })
 
           // Replace the text node with highlighted HTML
@@ -1477,7 +1477,7 @@ export async function highlightTextInline(selector: string, searchText: string, 
                   return NodeFilter.FILTER_REJECT
                 }
                 
-                if (parent.classList.contains('aigentis-text-highlight')) {
+                if (parent.classList.contains('browserclaw-text-highlight')) {
                   return NodeFilter.FILTER_REJECT
                 }
                 
@@ -1508,7 +1508,7 @@ export async function highlightTextInline(selector: string, searchText: string, 
         // Clean up function if not persistent
         if (!persist) {
           setTimeout(() => {
-            const highlights = document.querySelectorAll('.aigentis-text-highlight')
+            const highlights = document.querySelectorAll('.browserclaw-text-highlight')
             highlights.forEach(highlight => {
               const parent = highlight.parentNode
               if (parent) {

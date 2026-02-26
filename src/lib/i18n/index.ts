@@ -7,7 +7,7 @@ import zhTranslations from "./locales/zh.json"
 
 export const SUPPORTED_LANGUAGES: Language[] = ['en', 'zh']
 export const DEFAULT_LANGUAGE: Language = 'en'
-export const LANGUAGE_STORAGE_KEY = 'aipex_language'
+export const LANGUAGE_STORAGE_KEY = 'browserclaw_language'
 
 // Translation resources map
 const translations: Record<Language, TranslationResources> = {

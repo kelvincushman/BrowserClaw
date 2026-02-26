@@ -994,7 +994,7 @@ export async function callMcpTool(request: McpRequest): Promise<McpResponse> {
           // Import and call the background download function directly
           if (typeof (globalThis as any).downloadCurrentChatImagesFromBackground === 'function') {
             const result = await (globalThis as any).downloadCurrentChatImagesFromBackground(
-              folderPrefix || "AIPex-Chat-Images",
+              folderPrefix || "BrowserClaw-Chat-Images",
               imageNames,
               filenamingStrategy,
               displayResults

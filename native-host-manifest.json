@@ -1,9 +1,0 @@
-{
-  "name": "com.aigentis.browser",
-  "description": "AigentisBrowser MCP Native Messaging Host",
-  "path": "/usr/local/bin/aigentis-browser-mcp",
-  "type": "stdio",
-  "allowed_origins": [
-    "chrome-extension://EXTENSION_ID_PLACEHOLDER/"
-  ]
-}

@@ -1,22 +1,22 @@
 #!/usr/bin/env node
 
 /**
- * AigentisBrowser MCP Server
+ * BrowserClaw MCP Server
  *
- * This MCP server connects Claude Code to the AigentisBrowser extension,
+ * This MCP server connects Claude Code to the BrowserClaw extension,
  * enabling AI-powered browser automation for social media management.
  *
  * Usage:
- *   npx @aigentis/mcp-server-browser
+ *   npx browserclaw-mcp-server
  *
  * Configuration in ~/.config/claude-code/mcp.json:
  * {
  *   "mcpServers": {
- *     "aigentis-browser": {
+ *     "browserclaw": {
  *       "command": "npx",
- *       "args": ["-y", "@aigentis/mcp-server-browser"],
+ *       "args": ["-y", "browserclaw-mcp-server"],
  *       "env": {
- *         "AIGENTIS_WS_PORT": "9222"
+ *         "BROWSERCLAW_WS_PORT": "9222"
  *       }
  *     }
  *   }
@@ -37,17 +37,17 @@ import { BrowserBridge } from "./browser-bridge.js";
 import { BROWSER_TOOLS, SOCIAL_MEDIA_TOOLS, TREND_TOOLS, CONTENT_TOOLS } from "./tools/registry.js";
 
 // Configuration
-const WS_PORT = parseInt(process.env.AIGENTIS_WS_PORT || "9222", 10);
-const EXTENSION_ID = process.env.AIGENTIS_EXTENSION_ID || "";
+const WS_PORT = parseInt(process.env.BROWSERCLAW_WS_PORT || "9222", 10);
+const EXTENSION_ID = process.env.BROWSERCLAW_EXTENSION_ID || "";
 
-class AigentisBrowserMcpServer {
+class BrowserClawMcpServer {
   private server: Server;
   private browserBridge: BrowserBridge;
 
   constructor() {
     this.server = new Server(
       {
-        name: "aigentis-browser",
+        name: "browserclaw",
         version: "1.0.0",
       },
       {
@@ -113,25 +113,25 @@ class AigentisBrowserMcpServer {
       return {
         resources: [
           {
-            uri: "aigentis://accounts",
+            uri: "browserclaw://accounts",
             name: "Connected Social Media Accounts",
             description: "List of all connected social media accounts",
             mimeType: "application/json",
           },
           {
-            uri: "aigentis://trends",
+            uri: "browserclaw://trends",
             name: "Current Trends",
             description: "Real-time trending topics across platforms",
             mimeType: "application/json",
           },
           {
-            uri: "aigentis://queue",
+            uri: "browserclaw://queue",
             name: "Post Queue",
             description: "Scheduled and queued posts",
             mimeType: "application/json",
           },
           {
-            uri: "aigentis://browser/tabs",
+            uri: "browserclaw://browser/tabs",
             name: "Browser Tabs",
             description: "Currently open browser tabs",
             mimeType: "application/json",
@@ -152,19 +152,19 @@ class AigentisBrowserMcpServer {
         let result: unknown;
 
         switch (uri) {
-          case "aigentis://accounts":
+          case "browserclaw://accounts":
             result = await this.browserBridge.callTool("list_connected_accounts", {});
             break;
-          case "aigentis://trends":
+          case "browserclaw://trends":
             result = await this.browserBridge.callTool("get_trending_topics", {
               platforms: ["twitter", "linkedin"],
               limit: 10,
             });
             break;
-          case "aigentis://queue":
+          case "browserclaw://queue":
             result = await this.browserBridge.callTool("get_post_queue", {});
             break;
-          case "aigentis://browser/tabs":
+          case "browserclaw://browser/tabs":
             result = await this.browserBridge.callTool("get_all_tabs", {});
             break;
           default:
@@ -192,14 +192,14 @@ class AigentisBrowserMcpServer {
     await this.server.connect(transport);
 
     // Log startup message to stderr (stdout is reserved for MCP protocol)
-    console.error("AigentisBrowser MCP Server started");
+    console.error("BrowserClaw MCP Server started");
     console.error(`WebSocket port: ${WS_PORT}`);
     console.error(`Extension ID: ${EXTENSION_ID || "(auto-detect)"}`);
   }
 }
 
 // Start the server
-const server = new AigentisBrowserMcpServer();
+const server = new BrowserClawMcpServer();
 server.run().catch((error) => {
   console.error("Failed to start MCP server:", error);
   process.exit(1);

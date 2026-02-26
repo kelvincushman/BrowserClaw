@@ -1,5 +1,5 @@
 /**
- * Type definitions for AigentisBrowser MCP Server
+ * Type definitions for BrowserClaw MCP Server
  */
 
 /**

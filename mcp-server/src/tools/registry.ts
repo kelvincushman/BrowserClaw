@@ -1,7 +1,7 @@
 /**
  * MCP Tool Registry
  *
- * Defines all available tools for the AigentisBrowser MCP server.
+ * Defines all available tools for the BrowserClaw MCP server.
  * Tools are categorized into:
  * - Browser Tools: Tab, window, page automation
  * - Social Media Tools: Platform-specific actions
@@ -21,7 +21,7 @@ interface ToolDefinition {
 
 /**
  * Browser Automation Tools
- * These map to existing AigentisBrowser MCP tools
+ * These map to existing BrowserClaw MCP tools
  */
 export const BROWSER_TOOLS: ToolDefinition[] = [
   // Tab Management

@@ -204,7 +204,7 @@ const clearActions = async () => {
     { title: "Fullscreen", desc: "Make the page fullscreen", type: "action", action: "fullscreen", emoji: true, emojiChar: "🖥", keycheck: true, keys: ['⌘', 'Ctrl', 'F'] },
     muteaction,
     { title: "Reload", desc: "Reload the page", type: "action", action: "reload", emoji: true, emojiChar: "♻️", keycheck: true, keys: ['⌘', '⇧', 'R'] },
-    { title: "Help", desc: "Get help with BrowserClaw on GitHub", type: "action", action: "url", url: "https://github.com/kelvincushman/AIPex", emoji: true, emojiChar: "🤔", keycheck: false },
+    { title: "Help", desc: "Get help with BrowserClaw on GitHub", type: "action", action: "url", url: "https://github.com/kelvincushman/BrowserClaw", emoji: true, emojiChar: "🤔", keycheck: false },
     { title: "Compose email", desc: "Compose a new email", type: "action", action: "email", emoji: true, emojiChar: "✉️", keycheck: true, keys: ['⌥', '⇧', 'C'] },
     { title: "Print page", desc: "Print the current page", type: "action", action: "print", emoji: true, emojiChar: "🖨️", keycheck: true, keys: ['⌘', 'P'] },
     { title: "New Notion page", desc: "Create a new Notion page", type: "action", action: "url", url: "https://notion.new", emoji: false, favIconUrl: logoNotion, keycheck: false },
@@ -313,7 +313,7 @@ const clearActions = async () => {
 chrome.runtime.onInstalled.addListener(async (object) => {
   // Plasmo/Manifest V3: Cannot directly inject scripts using content_scripts field, need scripting API
   if (object.reason === "install") {
-    chrome.tabs.create({ url: "https://github.com/kelvincushman/AIPex" })
+    chrome.tabs.create({ url: "https://github.com/kelvincushman/BrowserClaw" })
   }
 
   // Pre-store gateway token & enable relay so it auto-connects
@@ -965,9 +965,9 @@ async function parseStreamingResponse(response: Response, messageId?: string) {
   return { content, toolCalls }
 }
 
-// Unified system prompt describing AIPex product capabilities (Chinese)
+// Unified system prompt describing BrowserClaw product capabilities (Chinese)
 const SYSTEM_PROMPT = [
-  "You are the AIPex browser assistant with enhanced planning capabilities. Respond in the same language as the user's input. Default to English if language is unclear.. Use tools when available and provide clear next steps when tools are not needed.",
+  "You are the BrowserClaw browser assistant with enhanced planning capabilities. Respond in the same language as the user's input. Default to English if language is unclear.. Use tools when available and provide clear next steps when tools are not needed.",
 
   "\n=== TOOL CALLS FORMAT REQUIREMENT ===",
   "IMPORTANT: When using tools, you MUST use the standard OpenAI tool_calls format only.",

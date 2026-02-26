@@ -1,10 +1,10 @@
 {
-  "name": "@aigentis/mcp-server-browser",
+  "name": "browserclaw-mcp-server",
   "version": "1.0.0",
-  "description": "MCP Server for AigentisBrowser - Connect Claude Code to browser automation",
+  "description": "MCP Server for BrowserClaw - Connect Claude Code to browser automation",
   "main": "dist/index.js",
   "bin": {
-    "aigentis-mcp-server": "./dist/index.js"
+    "browserclaw-mcp-server": "./dist/index.js"
   },
   "type": "module",
   "scripts": {
@@ -18,9 +18,9 @@
     "claude",
     "browser-automation",
     "social-media",
-    "aigentis"
+    "browserclaw"
   ],
-  "author": "AigentisBrowser Team",
+  "author": "BrowserClaw",
   "license": "MIT",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.52.0",
@@ -41,6 +41,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kelvincushman/AigentisBrowser.git"
+    "url": "git+https://github.com/kelvincushman/BrowserClaw.git"
   }
 }

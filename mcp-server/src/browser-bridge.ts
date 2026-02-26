@@ -1,7 +1,7 @@
 /**
  * Browser Bridge
  *
- * Handles communication between the MCP server and the AigentisBrowser extension
+ * Handles communication between the MCP server and the BrowserClaw extension
  * via WebSocket connection.
  */
 
@@ -59,14 +59,14 @@ export class BrowserBridge {
     }
 
     return new Promise((resolve, reject) => {
-      const wsUrl = `ws://localhost:${this.port}/aigentis`;
+      const wsUrl = `ws://localhost:${this.port}/browserclaw`;
 
-      console.error(`Connecting to AigentisBrowser at ${wsUrl}...`);
+      console.error(`Connecting to BrowserClaw at ${wsUrl}...`);
 
       this.ws = new WebSocket(wsUrl);
 
       this.ws.on("open", () => {
-        console.error("Connected to AigentisBrowser extension");
+        console.error("Connected to BrowserClaw extension");
         this.reconnectAttempts = 0;
 
         // Send handshake
@@ -87,7 +87,7 @@ export class BrowserBridge {
       });
 
       this.ws.on("close", () => {
-        console.error("Disconnected from AigentisBrowser extension");
+        console.error("Disconnected from BrowserClaw extension");
         this.ws = null;
         this.handleDisconnect();
       });
@@ -98,7 +98,7 @@ export class BrowserBridge {
         if (!this.isConnected()) {
           reject(
             new Error(
-              `Failed to connect to AigentisBrowser. ` +
+              `Failed to connect to BrowserClaw. ` +
                 `Make sure the extension is installed and the WebSocket server is running on port ${this.port}. ` +
                 `Error: ${error.message}`
             )
@@ -182,7 +182,7 @@ export class BrowserBridge {
    */
   async callTool(name: string, args: Record<string, unknown>): Promise<unknown> {
     if (!this.isConnected()) {
-      throw new Error("Not connected to AigentisBrowser extension");
+      throw new Error("Not connected to BrowserClaw extension");
     }
 
     return new Promise((resolve, reject) => {

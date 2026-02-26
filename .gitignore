@@ -16,6 +16,11 @@
 .DS_Store
 *.pem
 
+# IDE
+.vscode/
+.cursor/
+.idea/
+
 # debug
 npm-debug.log*
 yarn-debug.log*
@@ -38,6 +43,11 @@ keys.json
 # typescript
 .tsbuildinfo
 *.zip
+
+# Lock files
+package-lock.json
+pnpm-lock.yaml
+mcp-server/package-lock.json
 
 # MCP server
 mcp-server/node_modules/

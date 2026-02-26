@@ -518,7 +518,7 @@ const Omni = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => 
     setTimeout(() => setToast(null), 2000)
     // Specific operations
     if (action.action === "ai-chat-user-input") {
-      chrome.storage.local.set({ aipex_user_input: action.desc })
+      chrome.storage.local.set({ browserclaw_user_input: action.desc })
       chrome.runtime.sendMessage({ request: "open-sidepanel" })
       onClose()
       return
@@ -830,7 +830,7 @@ function initContentScript() {
   
   // Mount the content script
   const container = document.createElement("div")
-  container.id = "aipex-content-root"
+  container.id = "browserclaw-content-root"
   document.body.appendChild(container)
 
   // Create shadow DOM to isolate styles

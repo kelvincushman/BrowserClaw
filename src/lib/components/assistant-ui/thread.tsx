@@ -298,16 +298,16 @@ export const Thread: FC = () => {
   useEffect(() => {
     if (messages.length > 0) {
       const deduplicatedMessages = validateAndDeduplicateMessages(messages);
-      chrome.storage?.local?.set({ 'aipex_conversation_history': deduplicatedMessages });
+      chrome.storage?.local?.set({ 'browserclaw_conversation_history': deduplicatedMessages });
     }
   }, [messages, validateAndDeduplicateMessages]);
 
   // Restore messages from storage on mount
   useEffect(() => {
-    chrome.storage?.local?.get(['aipex_conversation_history'], (result) => {
-      if (result?.aipex_conversation_history && Array.isArray(result.aipex_conversation_history)) {
-        console.log('🔄 [DEBUG] Restoring conversation history:', result.aipex_conversation_history.length, 'messages');
-        const deduplicatedMessages = validateAndDeduplicateMessages(result.aipex_conversation_history);
+    chrome.storage?.local?.get(['browserclaw_conversation_history'], (result) => {
+      if (result?.browserclaw_conversation_history && Array.isArray(result.browserclaw_conversation_history)) {
+        console.log('🔄 [DEBUG] Restoring conversation history:', result.browserclaw_conversation_history.length, 'messages');
+        const deduplicatedMessages = validateAndDeduplicateMessages(result.browserclaw_conversation_history);
         console.log('🔄 [DEBUG] After deduplication:', deduplicatedMessages.length, 'messages');
         setMessages(deduplicatedMessages);
       }
@@ -335,12 +335,12 @@ export const Thread: FC = () => {
       setLoading(false);
       setCurrentMessageId(null);
       // Also clear the stored conversation history
-      chrome.storage?.local?.remove(['aipex_conversation_history']);
+      chrome.storage?.local?.remove(['browserclaw_conversation_history']);
     };
 
-    window.addEventListener('clear-aipex-messages', handleClearMessages);
+    window.addEventListener('clear-browserclaw-messages', handleClearMessages);
     return () => {
-      window.removeEventListener('clear-aipex-messages', handleClearMessages);
+      window.removeEventListener('clear-browserclaw-messages', handleClearMessages);
     };
   }, []);
 
@@ -824,22 +824,22 @@ export const Thread: FC = () => {
     }
   }, [loading, messages, selectedTabs]);
 
-  // When sidepanel mounts, automatically read chrome.storage.local['aipex_user_input'], if exists, auto-fill and send
+  // When sidepanel mounts, automatically read chrome.storage.local['browserclaw_user_input'], if exists, auto-fill and send
   useEffect(() => {
     // Only execute on initial mount to prevent re-execution issues
     if (!isInitialMount.current) return;
     isInitialMount.current = false;
     
-    chrome.storage?.local?.get(["aipex_user_input"], (result) => {
-      if (result && result.aipex_user_input) {
-        console.log('🔄 [DEBUG] Auto-filling input from storage:', result.aipex_user_input);
-        setInputValue(result.aipex_user_input);
+    chrome.storage?.local?.get(["browserclaw_user_input"], (result) => {
+      if (result && result.browserclaw_user_input) {
+        console.log('🔄 [DEBUG] Auto-filling input from storage:', result.browserclaw_user_input);
+        setInputValue(result.browserclaw_user_input);
         // Use a more stable approach to prevent re-execution issues
         setTimeout(() => {
           if (!loading) {
-            console.log('🔄 [DEBUG] Auto-submitting message:', result.aipex_user_input);
-            handleSubmit(result.aipex_user_input);
-            chrome.storage.local.remove("aipex_user_input");
+            console.log('🔄 [DEBUG] Auto-submitting message:', result.browserclaw_user_input);
+            handleSubmit(result.browserclaw_user_input);
+            chrome.storage.local.remove("browserclaw_user_input");
           }
         }, 100); // Slightly longer delay to ensure state is stable
       }

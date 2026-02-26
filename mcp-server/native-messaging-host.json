@@ -1,7 +1,7 @@
 {
-  "name": "com.aigentis.browser.mcp",
-  "description": "AigentisBrowser MCP Native Messaging Host",
-  "path": "/usr/local/bin/aigentis-mcp-host",
+  "name": "com.browserclaw.mcp",
+  "description": "BrowserClaw MCP Native Messaging Host",
+  "path": "/usr/local/bin/browserclaw-mcp-host",
   "type": "stdio",
   "allowed_origins": [
     "chrome-extension://EXTENSION_ID_HERE/"
