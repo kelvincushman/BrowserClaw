@@ -1237,7 +1237,7 @@ export async function highlightElement(selector: string, options?: {
 
         // Debug info for color selection
         const elementColors = getElementColors(element)
-        console.log('AigentisBrowser Color Detection:', {
+        console.log('BrowserClaw Color Detection:', {
           element: element.tagName + (element.className ? '.' + element.className : ''),
           detectedBackground: elementColors.background,
           detectedText: elementColors.text,

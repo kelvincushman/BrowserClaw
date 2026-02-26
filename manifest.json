@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "AigentisBrowser",
+  "name": "BrowserClaw",
   "version": "0.0.2",
   "description": "Automated social media management with AI-powered browser automation",
   "icons": {
@@ -40,15 +40,16 @@
     "<all_urls>"
   ],
   "commands": {
-    "open-aigentis-browser": {
+    "open-browserclaw": {
       "suggested_key": {
         "default": "Ctrl+M",
         "mac": "Command+M"
       },
-      "description": "Open AigentisBrowser command menu"
+      "description": "Open BrowserClaw command menu"
     }
   },
   "permissions": [
+    "nativeMessaging",
     "tabs",
     "windows",
     "tabGroups",
@@ -65,7 +66,9 @@
     "sidePanel",
     "management",
     "downloads",
-    "tabCapture"
+    "tabCapture",
+    "alarms",
+    "webNavigation"
   ]
 }
 

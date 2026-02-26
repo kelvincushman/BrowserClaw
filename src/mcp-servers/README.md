@@ -1,6 +1,6 @@
-# AigentisBrowser MCP Server Tools
+# BrowserClaw MCP Server Tools
 
-This directory contains all the MCP (Model Context Protocol) server tools for the AigentisBrowser extension, organized into separate files by category.
+This directory contains all the MCP (Model Context Protocol) server tools for the BrowserClaw extension, organized into separate files by category.
 
 ## Tool Categories
 

@@ -1,9 +1,9 @@
 {
-  "name": "@aigentis/aigentis-browser",
-  "displayName": "AigentisBrowser",
+  "name": "browserclaw",
+  "displayName": "BrowserClaw",
   "version": "0.0.2",
   "description": "Automated social media management with AI-powered browser automation",
-  "author": "AigentisBrowser",
+  "author": "BrowserClaw",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
@@ -95,7 +95,7 @@
       "<all_urls>"
     ],
     "commands": {
-      "open-aigentis-browser": {
+      "open-browserclaw": {
         "suggested_key": {
           "default": "Ctrl+M",
           "mac": "Command+M"
