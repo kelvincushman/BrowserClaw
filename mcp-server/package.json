@@ -1,0 +1,46 @@
+{
+  "name": "@aigentis/mcp-server-browser",
+  "version": "1.0.0",
+  "description": "MCP Server for AigentisBrowser - Connect Claude Code to browser automation",
+  "main": "dist/index.js",
+  "bin": {
+    "aigentis-mcp-server": "./dist/index.js"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "claude",
+    "browser-automation",
+    "social-media",
+    "aigentis"
+  ],
+  "author": "AigentisBrowser Team",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.52.0",
+    "@modelcontextprotocol/sdk": "^1.17.4",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/ws": "^8.5.12",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kelvincushman/AigentisBrowser.git"
+  }
+}
