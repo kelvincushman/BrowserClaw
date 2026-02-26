@@ -1,6 +1,6 @@
-# AigentisBrowser
+# BrowserClaw
 
-**AI-Powered Social Media Automation & Browser Control Platform**
+**AI-Powered Browser Automation — 112+ Tools, One Extension**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -12,16 +12,34 @@
 
 ## Overview
 
-AigentisBrowser transforms your Chrome browser into an intelligent automation platform. It combines **AI-powered browser control** with **social media automation**, allowing you to:
+BrowserClaw turns your Chrome browser into a remotely controllable automation platform. It exposes **112+ browser tools** (tabs, pages, forms, screenshots, bookmarks, history, and more) through multiple integration paths:
 
-- Research trending topics across LinkedIn, Twitter/X, Instagram, Facebook, and Reddit
-- Generate and post AI-assisted content on autopilot
-- Manage multiple social media accounts from a unified dashboard
-- Control browser automation via natural language or Claude Code terminal
+- **OpenClaw Skill** (primary) — script-based, ~24 tokens in the system prompt, agent writes Python scripts that execute as ONE tool call
+- **MCP Server** (secondary) — stdio-based server for Claude Desktop and other MCP clients
+- **Agent Chat** — chat with your AI agent directly from the browser sidepanel
+- **Native Messaging Bridge** — HTTP proxy on port 9333 that connects external tools to Chrome
 
-## Features
+## Architecture
 
-### Browser Automation (114 MCP Tools)
+```
+OpenClaw (Nova)                              Claude Desktop / other MCP clients
+  → skill script (ONE bash tool call)          → stdio MCP protocol (100+ tools)
+  → browserclaw client.py                      → mcp-server/server.py
+  → HTTP POST /tool_call                       → HTTP POST /tool_call
+                    ↓                                        ↓
+              Bridge Server (Chrome machine :9333)
+                    ↓ Native Messaging
+              BrowserClaw Extension (Chrome)
+                    ↓ Chrome APIs
+                  Browser
+
+User (sidepanel "Agent" tab)
+  → OpenAI-compatible /v1/chat/completions (streaming SSE)
+  → AI Agent (configurable URL)
+  → tool_calls in response → callMcpTool() locally
+```
+
+## Browser Tools (112+)
 
 | Category | Tools | Description |
 |----------|-------|-------------|
@@ -31,142 +49,197 @@ AigentisBrowser transforms your Chrome browser into an intelligent automation pl
 | **DOM Manipulation** | 4 | Click, scroll, highlight elements |
 | **Screenshots** | 5 | Capture tabs, save to clipboard, download |
 | **Tab Groups** | 5 | AI-powered automatic tab grouping |
-| **Bookmarks** | 5 | Create, search, manage bookmarks |
-| **History** | 4 | Search and manage browsing history |
-| **Windows** | 7 | Multi-window management |
+| **Bookmarks** | 11 | Create, search, manage bookmarks and folders |
+| **History** | 8 | Search and manage browsing history |
+| **Windows** | 13 | Multi-window management and arrangement |
+| **Clipboard** | 9 | Copy/read text, URLs, markdown, metadata |
 | **Downloads** | 10 | Download management and file operations |
 | **Storage** | 12 | Extension settings and data management |
+| **Sessions** | 5 | Session save/restore |
+| **Context Menus** | 5 | Custom context menu management |
 | **Utilities** | 11 | URL validation, text processing, system info |
-
-### Social Media Automation
-
-| Feature | Platforms | Description |
-|---------|-----------|-------------|
-| **Trend Research** | Twitter, LinkedIn, Instagram, Reddit | Real-time trending topic detection |
-| **Content Generation** | All | AI-powered post drafts, replies, threads |
-| **Auto-Engagement** | All | Automated likes, replies, shares |
-| **Scheduling** | All | Queue posts for optimal timing |
-| **Analytics** | All | Track engagement metrics |
-| **Multi-Account** | All | Manage multiple accounts per platform |
-
-### Dashboard UI Components
-
-- **Account Hub** - Connect and manage social media accounts with OAuth 2.0
-- **Trend Dashboard** - Real-time trending topics with category filtering
-- **Autopilot Control** - Configure automated engagement rules and review queue
-- **Post Composer** - AI-assisted content creation with hashtag optimization
-
-### MCP Server Integration
-
-Connect AigentisBrowser to Claude Code for terminal-based browser control:
-
-```bash
-# Example commands in Claude Code
-> Use aigentis-browser to check what's trending on LinkedIn
-> Draft a Twitter thread about AI agents
-> Post this to my connected accounts: "Exciting announcement..."
-```
 
 ## Installation
 
 ### Chrome Extension
 
 ```bash
-# Clone the repository
-git clone https://github.com/kelvincushman/AigenitsBrowser.git
-cd AigenitsBrowser
+git clone https://github.com/kelvincushman/BrowserClaw.git
+cd BrowserClaw
 
-# Install dependencies
-pnpm install
-
-# Build for production
-pnpm run build
+npm install
+npm run build
 
 # Load in Chrome:
 # 1. Open chrome://extensions/
 # 2. Enable "Developer mode"
 # 3. Click "Load unpacked"
-# 4. Select build/chrome-mv3-prod
+# 4. Select the dist/ folder
 ```
 
-### MCP Server (for Claude Code)
+### Bridge Server (on the Chrome machine)
+
+The bridge server runs alongside Chrome and proxies HTTP requests to the extension via native messaging:
 
 ```bash
-# Install and build
-cd mcp-server
-npm install
-npm run build
+cd aigentis-bridge
+python3 bridge-server.py
+# Listens on 0.0.0.0:9333
+```
 
-# Configure Claude Code (~/.config/claude-code/mcp.json)
+Configure in `aigentis-bridge/config.json`:
+```json
+{
+  "port": 9333,
+  "bind": "0.0.0.0",
+  "token": "your-secret-token",
+  "log_file": "bridge.log"
+}
+```
+
+### OpenClaw Skill (Recommended)
+
+The most token-efficient way to use BrowserClaw. Only ~24 tokens in the system prompt — the agent writes Python scripts that execute as a single tool call.
+
+**Skill files:** `~/.openclaw/workspace/skills/browserclaw/`
+
+```bash
+# Register in openclaw.json skills.entries:
+"browserclaw": {
+  "env": {
+    "BROWSERCLAW_BRIDGE_URL": "http://CHROME_MACHINE_IP:9333",
+    "BROWSERCLAW_BRIDGE_TOKEN": "your-token"
+  }
+}
+```
+
+**Usage** — the agent writes scripts like:
+
+```bash
+cd skills/browserclaw && python3 <<'EOF'
+from client import call
+
+# Navigate to a URL
+call("create_new_tab", url="https://example.com")
+
+# Extract page content
+result = call("extract_page_text")
+print(result)
+
+# Click an element
+call("click_element", selector="button.submit")
+
+# Take a screenshot
+shot = call("capture_screenshot")
+print(f"Screenshot: {len(shot.get('result', {}).get('data', ''))} bytes")
+EOF
+```
+
+The client library (`client.py`) has zero dependencies — stdlib `urllib` only.
+
+### MCP Server (for Claude Desktop)
+
+For MCP clients that don't have a skill system:
+
+```bash
+cd mcp-server
+pip install -r requirements.txt
+python3 server.py
+```
+
+**Claude Desktop config** (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+```json
 {
   "mcpServers": {
-    "aigentis-browser": {
-      "command": "node",
-      "args": ["/path/to/AigenitsBrowser/mcp-server/dist/index.js"]
+    "browserclaw": {
+      "command": "python3",
+      "args": ["/path/to/BrowserClaw/mcp-server/server.py"],
+      "env": {
+        "BROWSERCLAW_BRIDGE_URL": "http://localhost:9333",
+        "BROWSERCLAW_BRIDGE_TOKEN": "your-token"
+      }
     }
   }
 }
 ```
 
-## Usage
+## Sidepanel UI
 
-### Quick Start
+The sidepanel has two tabs:
 
-1. **Install Extension** - Load the built extension in Chrome
-2. **Configure AI** - Set your API key (OpenAI, Claude, or DeepSeek) in settings
-3. **Open AigentisBrowser** - Press `Ctrl+M` (Windows/Linux) or `Cmd+M` (Mac)
-4. **Start Automating** - Use natural language commands or the dashboard
+### Chat Tab
+Built-in AI chatbot with access to all 112+ browser tools. Configure any OpenAI-compatible API endpoint (OpenAI, Anthropic, DeepSeek, xAI, self-hosted).
 
-### Keyboard Shortcuts
+**Supported models:**
+- **Anthropic** — Claude Opus 4.6, Sonnet 4.6, Haiku 4.5
+- **OpenAI** — GPT-4o, GPT-4o Mini, o3, o4-mini
+- **xAI** — Grok 3, Grok 3 Mini
+- **DeepSeek** — DeepSeek V3
+
+### Agent Tab
+Connect to an external AI agent (e.g., OpenClaw gateway) via OpenAI-compatible streaming API. The agent can call browser tools via `tool_calls` in the response. Configure:
+- **Agent URL** — endpoint (default: `http://localhost:18789/v1/chat/completions`)
+- **Token** — Bearer auth
+- **Model** — model name
+- **Agent ID** — sent as `x-openclaw-agent-id` header
+
+## API Endpoints
+
+### Bridge Server
+
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| `GET` | `/health` | No | Extension connection status |
+| `GET` | `/tools` | Bearer | List all available tools with schemas |
+| `POST` | `/tool_call` | Bearer | Execute a browser tool |
+
+**Example:**
+```bash
+# List tools
+curl http://localhost:9333/tools -H "Authorization: Bearer $TOKEN"
+
+# Call a tool
+curl -X POST http://localhost:9333/tool_call \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"tool": "get_current_tab", "args": {}}'
+```
+
+## Keyboard Shortcuts
 
 | Shortcut | Action |
 |----------|--------|
-| `Ctrl/Cmd + M` | Open AigentisBrowser command palette |
-| `Alt + Shift + P` | Pin/Unpin current tab |
-| `Alt + Shift + M` | Mute/Unmute current tab |
-| `Alt + Shift + D` | Duplicate current tab |
+| `Ctrl/Cmd + M` | Open BrowserClaw command palette |
 
-### Example Commands
+## Project Structure
 
 ```
-"Organize my tabs by topic using AI"
-"Extract all links from this page and save as markdown"
-"Fill the contact form with my saved details"
-"What's trending on Twitter in technology?"
-"Draft a LinkedIn post about remote work trends"
-"Schedule this post for tomorrow at 9 AM"
-```
-
-## Architecture
-
-```
-AigenitsBrowser/
+BrowserClaw/
 ├── src/
-│   ├── background.ts          # Service worker (extension core)
-│   ├── content.tsx            # Content script (page interaction)
-│   ├── sidepanel.tsx          # Side panel UI entry
-│   ├── mcp/                   # MCP client implementation
-│   │   ├── client.ts          # Browser MCP client (1,400+ lines)
-│   │   └── index.ts           # Tool routing
-│   ├── mcp-servers/           # Tool implementations
+│   ├── background.ts              # Service worker (extension core)
+│   ├── content.tsx                 # Content script (command palette)
+│   ├── sidepanel.tsx               # Tabbed sidepanel (Chat + Agent)
+│   ├── mcp/                        # MCP client
+│   │   ├── client.ts               # Tool definitions (112+ tools)
+│   │   └── index.ts                # Tool routing & execution
+│   ├── mcp-servers/                # Tool implementations by category
 │   │   ├── tab-management.ts
 │   │   ├── page-content.ts
-│   │   ├── social-media/      # Social media automation
+│   │   ├── bookmarks.ts
 │   │   └── ...
 │   └── lib/
 │       ├── components/
-│       │   ├── chatbot/       # AI chat interface
-│       │   └── dashboard/     # Social media dashboard
-│       ├── security/          # Credential encryption
-│       └── oauth/             # OAuth 2.0 handlers
-├── mcp-server/                # Standalone MCP server
-│   ├── src/
-│   │   ├── index.ts           # Server entry point
-│   │   ├── browser-bridge.ts  # WebSocket communication
-│   │   └── tools/registry.ts  # Tool definitions
-│   └── package.json
-└── docs/
-    └── PRD-AI-Social-Media-Agent.md
+│       │   ├── chatbot/            # Chat tab (MessageHandler + UI)
+│       │   └── agent-chat/         # Agent tab
+│       ├── native-messaging-host.ts # NM bridge handler
+│       ├── openclaw-relay.ts       # OpenClaw CDP relay
+│       └── services/
+│           └── tool-registry.ts    # Tool registry (categories, search)
+├── mcp-server/                     # Standalone MCP server (Python)
+│   ├── server.py                   # stdio MCP server
+│   ├── config.json
+│   └── requirements.txt
+└── manifest.json
 ```
 
 ## Technology Stack
@@ -175,138 +248,34 @@ AigenitsBrowser/
 |-------|------------|
 | **Frontend** | React 19, TypeScript 5.3, Tailwind CSS 4 |
 | **Extension** | Chrome Manifest V3, Service Worker |
-| **AI Integration** | MCP SDK 1.17, OpenAI API, Claude API |
-| **UI Components** | Radix UI, Ant Design X, Lucide Icons |
-| **Build** | Vite 7, CRXJS, pnpm |
-| **Security** | AES-256-GCM, PBKDF2, OAuth 2.0 + PKCE |
+| **AI Integration** | MCP SDK 1.17, OpenAI-compatible APIs |
+| **UI Components** | Radix UI, Lucide Icons |
+| **Build** | Vite 7, CRXJS |
+| **MCP Server** | Python, `mcp` SDK, `httpx` |
+| **Skill Client** | Python (stdlib only) |
 
 ## Security
 
-### Credential Storage
-- All OAuth tokens encrypted at rest with AES-256-GCM
-- Master password protection with PBKDF2 (600K iterations)
-- Per-credential random IVs
-- Automatic token refresh
-
-### Permissions
-The extension requests these Chrome permissions:
-- `tabs`, `windows`, `tabGroups` - Tab management
-- `activeTab`, `scripting` - Page interaction
-- `storage` - Settings and credentials
-- `bookmarks`, `history` - Browser data access
-- `downloads` - File operations
-- `identity` - OAuth authentication
-
-## Configuration
-
-### AI Provider Setup
-
-1. Open extension settings (click extension icon)
-2. Select your AI provider:
-   - **OpenAI** - GPT-4, GPT-4 Turbo
-   - **Anthropic** - Claude Sonnet 4, Claude Sonnet 4.5
-   - **DeepSeek** - DeepSeek Chat
-3. Enter your API key
-4. (Optional) Configure custom endpoint for self-hosted models
-
-### Social Media OAuth
-
-1. Navigate to Account Hub in the dashboard
-2. Click "Add Account"
-3. Select platform (Twitter, LinkedIn, Instagram, Facebook, Reddit)
-4. Complete OAuth flow in popup
-5. Account tokens are encrypted and stored locally
+- Bridge server requires Bearer token authentication on `/tools` and `/tool_call`
+- All tokens stored via config files or environment variables, never in source
+- Agent chat credentials stored in `chrome.storage.local`
+- MCP server reads `BROWSERCLAW_BRIDGE_TOKEN` from env
+- Host access controls (whitelist/blocklist) for page content tools
 
 ## Development
 
 ```bash
 # Start development server with hot reload
-pnpm run dev
+npm run dev
 
 # Build production extension
-pnpm run build
+npm run build
 
-# Build MCP server
-cd mcp-server && npm run build
-
-# Type check
-pnpm exec tsc --noEmit
+# MCP server
+cd mcp-server && pip install -r requirements.txt && python3 server.py
 ```
-
-## API Reference
-
-### MCP Tools (Social Media)
-
-```typescript
-// Post to platform
-{
-  tool: "post_to_platform",
-  args: {
-    platform: "twitter" | "linkedin" | "instagram" | "facebook",
-    content: "Your post content",
-    hashtags: ["#AI", "#Tech"],
-    scheduledTime: "2025-01-15T09:00:00Z" // optional
-  }
-}
-
-// Get trending topics
-{
-  tool: "get_trending_topics",
-  args: {
-    platforms: ["twitter", "linkedin"],
-    category: "technology",
-    limit: 10
-  }
-}
-
-// Generate reply suggestions
-{
-  tool: "generate_reply_suggestions",
-  args: {
-    postUrl: "https://twitter.com/user/status/123",
-    tone: "professional",
-    count: 3
-  }
-}
-```
-
-### MCP Tools (Browser)
-
-```typescript
-// Fill form input
-{
-  tool: "fill_input",
-  args: {
-    selector: "#email",
-    text: "user@example.com"
-  }
-}
-
-// Extract page content
-{
-  tool: "extract_page_text",
-  args: {}
-}
-
-// Capture screenshot
-{
-  tool: "capture_screenshot",
-  args: {}
-}
-```
-
-## Roadmap
-
-- [ ] Firefox extension support
-- [ ] Mobile companion app
-- [ ] Advanced analytics dashboard
-- [ ] Team collaboration features
-- [ ] Webhook integrations
-- [ ] Custom automation workflows
 
 ## Contributing
-
-Contributions are welcome! Please read our contributing guidelines before submitting PRs.
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -320,10 +289,6 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/kelvincushman/AigenitsBrowser/issues)
-- **Documentation**: [PRD](docs/PRD-AI-Social-Media-Agent.md)
-- **MCP Server Docs**: [mcp-server/README.md](mcp-server/README.md)
-
----
-
-**Built for the future of social media automation**
+- **Issues**: [GitHub Issues](https://github.com/kelvincushman/BrowserClaw/issues)
+- **Tool Reference**: [src/mcp-servers/README.md](src/mcp-servers/README.md)
+- **MCP Server**: [mcp-server/](mcp-server/)
