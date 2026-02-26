@@ -29,6 +29,8 @@ interface NativeResponse {
   error?: string | null;
 }
 
+const NM_KEEPALIVE_ALARM = 'nm-keepalive';
+
 export class NativeMessagingHost {
   private port: chrome.runtime.Port | null = null;
   private readonly hostName = 'com.browserclaw.bridge';
@@ -38,7 +40,19 @@ export class NativeMessagingHost {
   private reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
+    this.setupKeepalive();
     this.connect();
+  }
+
+  private setupKeepalive(): void {
+    // MV3 service workers die after 30s of inactivity.
+    // A periodic alarm keeps us alive while NM is connected.
+    chrome.alarms.create(NM_KEEPALIVE_ALARM, { periodInMinutes: 0.4 });
+    chrome.alarms.onAlarm.addListener((alarm) => {
+      if (alarm.name === NM_KEEPALIVE_ALARM && this.isConnected) {
+        this.sendRaw({ type: "ping" });
+      }
+    });
   }
 
   private connect(): void {
