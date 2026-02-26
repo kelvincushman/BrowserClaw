@@ -55,7 +55,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import type { ChatStatus } from "ai";
-import { ClockIcon, CopyIcon, RefreshCcwIcon, SettingsIcon, PlusIcon, LayersIcon, FileTextIcon, SearchIcon, DollarSignIcon, GlobeIcon, BookmarkIcon, ClipboardIcon, CameraIcon, FileIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import { ClockIcon, CopyIcon, RefreshCcwIcon, SettingsIcon, PlusIcon, LayersIcon, FileTextIcon, SearchIcon, DollarSignIcon, GlobeIcon, BookmarkIcon, ClipboardIcon, CameraIcon, FileIcon, ChevronDownIcon, ChevronUpIcon, WifiIcon, WifiOffIcon } from "lucide-react";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { models, SYSTEM_PROMPT } from "./constants";
 import { MessageHandler, type MessageHandlerConfig } from "./message-handler";
@@ -203,6 +203,15 @@ const ChatBot = () => {
   const [whitelistInput, setWhitelistInput] = useState("");
   const [blocklistInput, setBlocklistInput] = useState("");
   const [activeTab, setActiveTab] = useState("general");
+
+  // Relay state
+  const [relayStatus, setRelayStatus] = useState<string>("unknown");
+  const [relaySessions, setRelaySessions] = useState<any[]>([]);
+  const [relayConnecting, setRelayConnecting] = useState(false);
+  const [relayPort, setRelayPort, isLoadingRelayPort] = useStorage("relayPort", "18792");
+  const [relayGatewayToken, setRelayGatewayToken, isLoadingRelayToken] = useStorage("gatewayToken", "");
+  const [tempRelayPort, setTempRelayPort] = useState("");
+  const [tempRelayGatewayToken, setTempRelayGatewayToken] = useState("");
 
   const placeholderList = [
     t("input.placeholder1"),
@@ -360,10 +369,92 @@ const ChatBot = () => {
     loadHostAccessSettings();
   }, []);
 
+  // Fetch relay status on mount and periodically
+  useEffect(() => {
+    const check = async () => {
+      try {
+        const resp = await chrome.runtime.sendMessage({
+          type: "openclaw-relay",
+          action: "status",
+        });
+        if (resp) setRelayStatus(resp.status || "unknown");
+      } catch { /* ignore */ }
+    };
+    check();
+    const interval = setInterval(check, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Poll relay status when settings dialog is open on the Relay tab
+  const fetchRelayStatus = async () => {
+    try {
+      const resp = await chrome.runtime.sendMessage({
+        type: "openclaw-relay",
+        action: "status",
+      });
+      if (resp) {
+        setRelayStatus(resp.status || "unknown");
+        setRelaySessions(resp.sessions || []);
+      }
+    } catch {
+      setRelayStatus("unknown");
+    }
+  };
+
+  useEffect(() => {
+    if (showSettings && activeTab === "relay") {
+      fetchRelayStatus();
+      const interval = setInterval(fetchRelayStatus, 2000);
+      return () => clearInterval(interval);
+    }
+  }, [showSettings, activeTab]);
+
+  const handleRelayConnect = async () => {
+    setRelayConnecting(true);
+    try {
+      // Save settings first
+      if (tempRelayPort) setRelayPort(tempRelayPort);
+      if (tempRelayGatewayToken) setRelayGatewayToken(tempRelayGatewayToken);
+      // Also write directly to storage for the background to pick up immediately
+      await chrome.storage.local.set({
+        relayPort: parseInt(tempRelayPort || relayPort || "18792", 10),
+        gatewayToken: tempRelayGatewayToken || relayGatewayToken || "",
+        openclawRelayEnabled: true,
+      });
+
+      await chrome.runtime.sendMessage({
+        type: "openclaw-relay",
+        action: "connect",
+        port: parseInt(tempRelayPort || relayPort || "18792", 10),
+        gatewayToken: tempRelayGatewayToken || relayGatewayToken || "",
+      });
+      await new Promise((r) => setTimeout(r, 1500));
+      await fetchRelayStatus();
+    } catch (err) {
+      console.error("Relay connect failed:", err);
+    } finally {
+      setRelayConnecting(false);
+    }
+  };
+
+  const handleRelayDisconnect = async () => {
+    try {
+      await chrome.runtime.sendMessage({
+        type: "openclaw-relay",
+        action: "disconnect",
+      });
+      await fetchRelayStatus();
+    } catch (err) {
+      console.error("Relay disconnect failed:", err);
+    }
+  };
+
   const handleOpenSettings = () => {
     setTempAiHost(aiHost || "");
     setTempAiToken(aiToken || "");
     setTempAiModel(aiModel || "");
+    setTempRelayPort(relayPort || "18792");
+    setTempRelayGatewayToken(relayGatewayToken || "");
     setShowSettings(true);
   };
 
@@ -436,7 +527,20 @@ const ChatBot = () => {
           <SettingsIcon className="size-4" />
           {t("common.settings")}
         </Button>
-        <div className="text-sm font-medium">{t("common.title")}</div>
+        <div className="flex items-center gap-2 text-sm font-medium">
+          {t("common.title")}
+          <span
+            className={cn(
+              "inline-block w-2 h-2 rounded-full",
+              relayStatus === "connected"
+                ? "bg-green-500"
+                : relayStatus === "connecting"
+                ? "bg-amber-400 animate-pulse"
+                : "bg-gray-300"
+            )}
+            title={`Relay: ${relayStatus}`}
+          />
+        </div>
         <Button
           variant="ghost"
           size="sm"
@@ -706,6 +810,18 @@ const ChatBot = () => {
               >
                 Security
               </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("relay")}
+                className={cn(
+                  "px-4 py-2 text-sm font-medium border-b-2 transition-colors",
+                  activeTab === "relay"
+                    ? "border-primary text-primary"
+                    : "border-transparent text-muted-foreground hover:text-foreground"
+                )}
+              >
+                Relay
+              </button>
             </div>
             
             {/* General Tab Content */}
@@ -773,6 +889,101 @@ const ChatBot = () => {
               </div>
             )}
             
+            {/* Relay Tab Content */}
+            {activeTab === "relay" && (
+              <div className="space-y-4 py-4">
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold">OpenClaw Relay</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Connect to the OpenClaw relay server to enable remote browser control.
+                  </p>
+
+                  {/* Relay Port */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Relay Port</label>
+                    <Input
+                      value={tempRelayPort}
+                      onChange={(e) => setTempRelayPort(e.target.value)}
+                      placeholder="18792"
+                    />
+                  </div>
+
+                  {/* Gateway Token */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Gateway Token</label>
+                    <Input
+                      type="password"
+                      value={tempRelayGatewayToken}
+                      onChange={(e) => setTempRelayGatewayToken(e.target.value)}
+                      placeholder="Enter gateway token..."
+                    />
+                  </div>
+
+                  {/* Status */}
+                  <div className="flex items-center justify-between p-3 rounded-lg border bg-muted/30">
+                    <div className="flex items-center gap-2">
+                      {relayStatus === "connected" ? (
+                        <WifiIcon className="size-5 text-green-500" />
+                      ) : (
+                        <WifiOffIcon className="size-5 text-gray-400" />
+                      )}
+                      <div>
+                        <div className="text-sm font-medium">
+                          {relayStatus === "connected"
+                            ? "Connected"
+                            : relayStatus === "connecting"
+                            ? "Connecting..."
+                            : "Disconnected"}
+                        </div>
+                        {relayStatus === "connected" && relaySessions.length > 0 && (
+                          <div className="text-xs text-muted-foreground">
+                            {relaySessions.length} tab{relaySessions.length !== 1 ? "s" : ""} attached
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {relayStatus === "connected" ? (
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={handleRelayDisconnect}
+                      >
+                        Disconnect
+                      </Button>
+                    ) : (
+                      <Button
+                        size="sm"
+                        onClick={handleRelayConnect}
+                        disabled={relayConnecting}
+                      >
+                        {relayConnecting ? "Connecting..." : "Connect"}
+                      </Button>
+                    )}
+                  </div>
+
+                  {/* Sessions list */}
+                  {relayStatus === "connected" && relaySessions.length > 0 && (
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Attached Tabs</label>
+                      <div className="space-y-1 max-h-40 overflow-y-auto">
+                        {relaySessions.map((session: any) => (
+                          <div
+                            key={session.sessionId}
+                            className="flex items-center justify-between bg-muted/50 px-3 py-2 rounded-md text-sm"
+                          >
+                            <span className="truncate flex-1">
+                              {session.sessionId} (tab {session.tabId})
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Security Tab Content */}
             {activeTab === "security" && (
               <div className="space-y-4 py-4">

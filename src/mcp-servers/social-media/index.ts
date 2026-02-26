@@ -467,7 +467,7 @@ export async function getFeedPosts(options: {
     }
 
     // Wait for page load
-    await new Promise((resolve) => setTimeout(resolve: 5000));
+    await new Promise((resolve) => setTimeout(resolve, 5000));
 
     // Extract posts from feed
     const result = await chrome.scripting.executeScript({

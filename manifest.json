@@ -48,6 +48,9 @@
       "description": "Open BrowserClaw command menu"
     }
   },
+  "externally_connectable": {
+    "ids": ["*"]
+  },
   "permissions": [
     "nativeMessaging",
     "tabs",

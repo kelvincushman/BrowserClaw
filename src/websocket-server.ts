@@ -15,7 +15,7 @@ import { browserMcpClient } from "./mcp/client.js";
 
 interface WebSocketMessage {
   id: string;
-  type: "handshake" | "tool_call" | "ping";
+  type: "handshake" | "tool_call" | "list_tools" | "ping";
   client?: string;
   version?: string;
   extensionId?: string;
@@ -25,7 +25,7 @@ interface WebSocketMessage {
 
 interface WebSocketResponse {
   id: string;
-  type: "handshake_ack" | "tool_result" | "pong" | "error";
+  type: "handshake_ack" | "tool_result" | "tool_list" | "pong" | "error";
   success?: boolean;
   data?: unknown;
   error?: string;
@@ -102,6 +102,9 @@ class McpWebSocketServer {
           };
         }
         return this.handleToolCall(message.id, message.tool, message.args || {});
+
+      case "list_tools":
+        return this.handleListTools(message.id);
 
       case "ping":
         return {
@@ -217,6 +220,34 @@ class McpWebSocketServer {
       return {
         id: messageId,
         type: "tool_result",
+        success: false,
+        error: error instanceof Error ? error.message : String(error),
+      };
+    }
+  }
+
+  /**
+   * Handle list_tools requests — returns all available tool schemas
+   */
+  private handleListTools(messageId: string): WebSocketResponse {
+    try {
+      const tools = browserMcpClient.tools.map((t) => ({
+        name: t.name,
+        description: t.description,
+        inputSchema: t.inputSchema,
+      }));
+
+      return {
+        id: messageId,
+        type: "tool_list",
+        success: true,
+        data: { tools },
+      };
+    } catch (error) {
+      console.error("[MCP-WS] list_tools error:", error);
+      return {
+        id: messageId,
+        type: "tool_list",
         success: false,
         error: error instanceof Error ? error.message : String(error),
       };

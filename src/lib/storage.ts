@@ -78,6 +78,9 @@ export class Storage {
   }
 }
 
+/** Default storage instance */
+export const storage = new Storage()
+
 /**
  * React hook for storage (similar to @plasmohq/storage/hook)
  */
